@@ -20,6 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,9 +94,7 @@ public class Login extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -158,11 +160,37 @@ public class Login extends AppCompatActivity {
     }
 
     public void loginUser(){
-        String url ="http://192.168.253.51/pMonitoring/login.php";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+        String url ="http://192.168.42.48/pMonitoring/login.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,url,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(Login.this,response,Toast.LENGTH_LONG).show();
+                SessionUser su = new SessionUser();
+                String nama = null;
+                String username=null;
+
+
+                try {
+                    JSONArray jArray = new JSONArray(response);
+                    JSONObject jObj = null;
+                    int i=0;
+                    while (jObj = jArray.getJSONObject(i)) {
+
+                        nama = jObj.getString("name");
+                        username = jObj.getString("username");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(nama);
+                    su.setName(nama);
+                    Toast.makeText(getBaseContext(),su.getName() , Toast.LENGTH_LONG).show();
+
+
+
+
+                onLoginSuccess();
+
             }
         }, new Response.ErrorListener() {
             @Override

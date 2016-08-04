@@ -1,7 +1,9 @@
 package id.situmorang.projectmonitoring.projectmonitoring;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +49,7 @@ public class Register extends AppCompatActivity {
     @Bind(R.id.link_login)
     TextView _loginLink;
     Spinner sp;
+    AlertDialog.Builder builder;
 
 
     @Override
@@ -57,6 +64,8 @@ public class Register extends AppCompatActivity {
         pst.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(pst);
         String position = sp.getSelectedItem().toString();
+
+        builder = new AlertDialog.Builder(Register.this);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,8 +93,6 @@ public class Register extends AppCompatActivity {
             return;
         }
         signupUser();
-        _signupButton.setEnabled(false);
-
 
         final ProgressDialog progressDialog = new ProgressDialog(Register.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -102,25 +109,62 @@ public class Register extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        //disini isi dengan validasi register sukses atau tidak dengan mengambil return dari phpnya
-                        Toast.makeText(getBaseContext(), "Register Success", Toast.LENGTH_LONG).show();
+
                         progressDialog.dismiss();
+
                     }
+
                 }, 3000);
+    }
+
+    private void displayAlert(final String status) {
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (status.equals("success")){
+                    onSignupSuccess();
+
+                }else if (status.equals("error")){
+                    _passwordText.setText("");
+                    _userText.setText("");
+                    _nameText.setText("");
+                }
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
     }
 
 
     public void onSignupSuccess() {
         //SignUp Code Placed Here
-        _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        Toast.makeText(getBaseContext(), "Register Success", Toast.LENGTH_LONG).show();
+        _nameText.setText("");
+        _passwordText.setText("");
+        _userText.setText("");
+        sp.setSelection(0);
 
     }
 
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Register failed", Toast.LENGTH_LONG).show();
+
+        builder.setTitle("Warning!!!");
+        builder.setMessage("Please Fill all the fields");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+
+
+            }
+        });
+
+        AlertDialog ad = builder.create();
+        ad.show();
 
         _signupButton.setEnabled(true);
     }
@@ -161,14 +205,22 @@ public class Register extends AppCompatActivity {
     }
 
     public void signupUser(){
-        String url ="http://192.168.253.51/pmonitoring/register.php";
+        String url ="http://192.168.0.121/pmonitoring/register.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST,url,
                 new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(Register.this,response,Toast.LENGTH_LONG).show();
-            }
-        }, new Response.ErrorListener() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        builder.setTitle("Message");
+                        builder.setMessage(response);
+                        displayAlert("success");
+
+
+
+
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(Register.this,error.toString(),Toast.LENGTH_LONG).show();
@@ -194,6 +246,8 @@ public class Register extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
+
 }
 
 
