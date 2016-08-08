@@ -9,11 +9,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="id.situmorang.projectmonitoring.projectmonitoring.MainActivity">
 
-    <TextView android:id="@+id/nameOfuser"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tulisan"
+        android:textSize="20sp"
+        android:layout_marginBottom="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_logout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
-        android:gravity="center"
-        android:textSize="30dip"/>
-
+        android:padding="12dp"
+        android:text="Logout"/>
 </RelativeLayout>

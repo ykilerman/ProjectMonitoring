@@ -4,7 +4,6 @@ package id.situmorang.projectmonitoring.projectmonitoring;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,7 +36,7 @@ import butterknife.ButterKnife;
 
 public class Register extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-    private static final int RequestLogin =0;
+
     @Bind(R.id.input_name)
     EditText _nameText;
     @Bind(R.id.input_user)
@@ -50,7 +49,6 @@ public class Register extends AppCompatActivity {
     TextView _loginLink;
     Spinner sp;
     AlertDialog.Builder builder;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,8 +77,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivityForResult(intent, RequestLogin);
+                finish();
             }
         });
     }
@@ -93,6 +90,8 @@ public class Register extends AppCompatActivity {
             return;
         }
         signupUser();
+        _signupButton.setEnabled(false);
+
 
         final ProgressDialog progressDialog = new ProgressDialog(Register.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -111,63 +110,29 @@ public class Register extends AppCompatActivity {
                     public void run() {
 
                         progressDialog.dismiss();
-
                     }
-
                 }, 3000);
-    }
-
-    private void displayAlert(final String status) {
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (status.equals("success")){
-                    onSignupSuccess();
-
-                }else if (status.equals("error")){
-                    _passwordText.setText("");
-                    _userText.setText("");
-                    _nameText.setText("");
-                }
-
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
     }
 
 
     public void onSignupSuccess() {
-        //SignUp Code Placed Here
         setResult(RESULT_OK, null);
         _nameText.setText("");
         _passwordText.setText("");
         _userText.setText("");
         sp.setSelection(0);
+        _signupButton.setEnabled(true);
+
 
     }
 
 
     public void onSignupFailed() {
-
         builder.setTitle("Warning!!!");
         builder.setMessage("Please Fill all the fields");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-
-
-            }
-        });
-
-        AlertDialog ad = builder.create();
-        ad.show();
-
-        _signupButton.setEnabled(true);
+        displayAlert("Failed");
     }
+
 
     public boolean validate() {
         boolean valid = true;
@@ -205,26 +170,51 @@ public class Register extends AppCompatActivity {
     }
 
     public void signupUser(){
-        String url ="http://192.168.0.121/pmonitoring/register.php";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-
-                        builder.setTitle("Message");
-                        builder.setMessage(response);
-                        displayAlert("success");
-
-
-
-
-                    }
-                }, new Response.ErrorListener() {
+        String url ="http://192.168.137.29/pmonitoring/register.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Register.this,error.toString(),Toast.LENGTH_LONG).show();
-                if (error instanceof TimeoutError) {
+            public void onResponse(String response) {
+                String status="" ;
+                String message="" ;
+
+
+
+                try {
+                    JSONArray jArray = new JSONArray(response);
+                    JSONObject jObj =jArray.getJSONObject(0);
+                    status = jObj.getString("status");
+                    message = jObj.getString("message");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (status.equalsIgnoreCase("error")){
+                    builder.setTitle("Warning!!!");
+                    builder.setMessage(message);
+                    displayAlert("error");
+                    _signupButton.setEnabled(true);
+                }else if(status.equalsIgnoreCase("error_connection")){
+                    builder.setTitle("Warning!!!");
+                    builder.setMessage(message);
+                    displayAlert("error_connection");
+                    _signupButton.setEnabled(true);
+                }else if(status.equalsIgnoreCase("success")){
+                    builder.setTitle("Message");
+                    builder.setMessage(message);
+                    displayAlert("success");
+                }else {
+                    builder.setTitle("Warning!!!");
+                    builder.setMessage("there is a problem with your database connection");
+                    displayAlert("error");
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (volleyError instanceof TimeoutError) {
                 }
             }
         }) {
@@ -247,8 +237,33 @@ public class Register extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    private void displayAlert(final String status) {
 
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (status.equals("success")){
+                    onSignupSuccess();
+
+                }else if (status.equals("error")){
+                    _passwordText.setText("");
+                    _userText.setText("");
+                    _nameText.setText("");
+                    _signupButton.setEnabled(true);
+                }else if (status.equals("Failed")){
+                    _signupButton.setEnabled(true);
+                }else if(status.equals("error_connection")){
+                    _passwordText.setText("");
+                    _userText.setText("");
+                    _nameText.setText("");
+                }
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
 }
-
 
 
