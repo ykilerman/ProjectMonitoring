@@ -23,4 +23,8 @@ class Project extends Model
     {
         return $this->belongsToMany('App\User');
     }
+    public function updatingStatus()
+    {
+        return $This->hasOne('App\UpdatingStatus');
+    }
 }
