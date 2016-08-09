@@ -6,13 +6,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'password', 'name',
     ];
 
     /**
@@ -23,4 +25,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function project()
+    {
+        return $this->belongsToMany('App\Project');
+    }
+    public function message()
+    {
+        return $this->hasMany('App\Message');
+    }
+    public function messageDetail()
+    {
+        return $this->hasMany('App\MessageDetail');
+    }
 }
