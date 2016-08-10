@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('title') {{-- place your title here --}} @endsection
+@section('title') contoh | @endsection
 
 @section('content')
 
 {{-- place your content here --}}
+tes
 
 @endsection
