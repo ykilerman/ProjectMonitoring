@@ -12,7 +12,7 @@ class UpdatingStatus extends Model
      * @var array
      */
     protected $fillable = [
-        'project_id', 'description',
+        'project_id', 'highlight', 'description',
     ];
 
     public function project()

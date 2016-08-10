@@ -15,6 +15,7 @@ class CreateUpdatingStatusesTable extends Migration
         Schema::create('updating_statuses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->unsigned();
+            $table->string('highlight',100);
             $table->string('description');
             $table->timestamps();
 
