@@ -16,10 +16,11 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->string('name',100);
             $table->string('description');
+            $table->string('icon_path');
             $table->string('client_name',50);
             $table->integer('value');
             $table->integer('update_schedule');
-            $table->date('last_notification');
+            $table->dateTime('last_notification');
             $table->enum('status',['Preparing','On Going','Closed','Deleted','Archived'])->default('Preparing');
             $table->timestamps();
         });
