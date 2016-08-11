@@ -10,6 +10,10 @@ use Redirect;
 
 class HomeController extends Controller
 {
+    public function getIndex()
+    {
+        return Redirect::to('login');
+    }
     public function getLogin()
     {
         return view('home.login');

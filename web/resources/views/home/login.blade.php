@@ -27,6 +27,11 @@
                         {{ Form::password('password',['class'=>'form-control']) }}
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-3 col-lg-9">
+                        {{ Form::checkbox('remember') }} Remember Me
+                    </div>
+                </div>
                 <div class="col-lg-offset-3 col-lg-4">
                     {{ Form::submit('Login',['class' => 'btn btn-primary']) }}
                 </div>
