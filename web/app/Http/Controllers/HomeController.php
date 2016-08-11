@@ -17,8 +17,7 @@ class HomeController extends Controller
     public function postLogin()
     {
         if (Auth::attempt(['username' => Input::get('username'), 'password' => Input::get('password')],Input::get('remember'))) {
-//			return Redirect::to('project');
-            return "<a href='logout'>Logout</a>";
+			return Redirect::to('project');
 		}
 		else {
 			return Redirect::to('login')->with('message','salah username atau salah password')->with('type','label-danger');
