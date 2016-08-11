@@ -9,6 +9,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="glyphicon glyphicon-user"></i> Login
+                @if(Session::has('message'))
+                    <span class="label {{ Session::get('type') }}">{{ Session::get('message') }}</span>
+                @endif
             </div>
             <div class="panel-body">
                 {{ Form::open(['url' => url('login'),'method'=>'POST','role'=>'form','class'=>'form-horizontal']) }}
