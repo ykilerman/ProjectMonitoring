@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 11 Agu 2016 pada 07.11
+-- Generation Time: 11 Agu 2016 pada 07.58
 -- Versi Server: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -36,6 +36,13 @@ CREATE TABLE `messages` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data untuk tabel `messages`
+--
+
+INSERT INTO `messages` (`id`, `user_id`, `subject`, `message`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'Message Seeder', 'This is a message table seeder.', '2016-08-11 05:42:21', '2016-08-11 05:42:21', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -47,6 +54,13 @@ CREATE TABLE `message_details` (
   `message_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data untuk tabel `message_details`
+--
+
+INSERT INTO `message_details` (`id`, `message_id`, `user_id`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -86,11 +100,18 @@ CREATE TABLE `projects` (
   `client_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `value` int(11) NOT NULL,
   `update_schedule` int(11) NOT NULL,
-  `last_notification` datetime NOT NULL,
+  `last_notification` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('Preparing','On Going','Closed','Deleted','Archived') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Preparing',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data untuk tabel `projects`
+--
+
+INSERT INTO `projects` (`id`, `name`, `description`, `icon_path`, `client_name`, `value`, `update_schedule`, `last_notification`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Project 1', 'Project 1 Seeder', 'images/icon/project1.png', 'VDI', 12000000, 7, '2016-08-11 05:34:01', 'Preparing', '2016-08-11 05:34:01', '2016-08-11 05:36:27');
 
 -- --------------------------------------------------------
 
@@ -103,6 +124,13 @@ CREATE TABLE `project_user` (
   `project_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data untuk tabel `project_user`
+--
+
+INSERT INTO `project_user` (`id`, `project_id`, `user_id`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -120,6 +148,13 @@ CREATE TABLE `reports` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data untuk tabel `reports`
+--
+
+INSERT INTO `reports` (`id`, `project_id`, `highlight`, `description`, `evidence`, `created_at`, `updated_at`) VALUES
+(1, 1, 'initiate project', 'initiate project', 'images/evidence/projectreport1.png', '2016-08-11 05:36:27', '2016-08-11 05:36:27');
+
 -- --------------------------------------------------------
 
 --
@@ -134,6 +169,13 @@ CREATE TABLE `updating_statuses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data untuk tabel `updating_statuses`
+--
+
+INSERT INTO `updating_statuses` (`id`, `project_id`, `highlight`, `description`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Closing Project', 'Project is cleared', '2016-08-11 05:57:36', '2016-08-11 05:57:36');
 
 -- --------------------------------------------------------
 
@@ -155,10 +197,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `position`, `remember_token`) VALUES
-(1, 'admin1', '$2y$10$dFLXO9oe/oepZqQxqM/1lObTIvueLwmWxUyvieOIFxHCQ1xb3UkS2', 'Project Admin 1', 'Project Admin', NULL),
-(2, 'coordinator1', '$2y$10$0zVc32Ni2k6KO.jFNw81UOsme2FjsJ4axTETnUJ0s28xFRxPUppTG', 'Project Coordinator 1', 'Project Coordinator', NULL),
-(3, 'stakeholder1', '$2y$10$2ugn98ouq6AfyqcCYGFhde3B6ozpuYiKW/YGkZLZK2uyiem18WC..', 'Stakeholder 1', 'Stakeholder', NULL),
-(4, 'management1', '$2y$10$scJMujqrhAgcssC4XlG0rOutTS1UY5xfp6jJK81F16kgCkOrOuP0K', 'Management 1', 'Management', NULL);
+(1, 'admin1', '$2y$10$GYxxVu4.ZcKVunVXQm/gLuYV7m0FqNRKl4knHGLH9B0YZ82yod3XW', 'Project Admin 1', 'Project Admin', NULL),
+(2, 'coordinator1', '$2y$10$5fjf2/hzTjsPqnIRBxFqfuiAGDhP1u2rfrCbU0Ce.ax2c7XP57msq', 'Project Coordinator 1', 'Project Coordinator', NULL),
+(3, 'stakeholder1', '$2y$10$uG4NewcqwU7IOtCblG7ALeU1LpIoAHafCiSezH4WZ7s7U.KWO893y', 'Stakeholder 1', 'Stakeholder', NULL),
+(4, 'management1', '$2y$10$IvinYkWfJg9N/DPYoDKgTOTUfp2hqYpqdLzyi9Or5V0tCeME4pmba', 'Management 1', 'Management', NULL);
 
 --
 -- Indexes for dumped tables
@@ -222,32 +264,32 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `message_details`
 --
 ALTER TABLE `message_details`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `project_user`
 --
 ALTER TABLE `project_user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `updating_statuses`
 --
 ALTER TABLE `updating_statuses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `users`
 --

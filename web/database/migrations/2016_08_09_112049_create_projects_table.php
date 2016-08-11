@@ -20,7 +20,7 @@ class CreateProjectsTable extends Migration
             $table->string('client_name',50);
             $table->integer('value');
             $table->integer('update_schedule');
-            $table->dateTime('last_notification');
+            $table->timestamp('last_notification')->useCurrent();
             $table->enum('status',['Preparing','On Going','Closed','Deleted','Archived'])->default('Preparing');
             $table->timestamps();
         });
