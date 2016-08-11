@@ -12,7 +12,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'client_name', 'value', 'update_schedule', 'last_notification', 'status',
+        'name', 'description', 'client_name', 'value', 'update_schedule', 'last_notification', 'status',
     ];
 
     public function report()
