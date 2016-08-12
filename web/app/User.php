@@ -28,7 +28,7 @@ class User extends Authenticatable
 
     public function project()
     {
-        return $this->belongsToMany('App\Project');
+        return $this->hasMany('App\Project');
     }
     public function message()
     {
