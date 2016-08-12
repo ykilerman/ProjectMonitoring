@@ -28,6 +28,7 @@
 <body>
 	<header>@include('layouts.header')</header>
     @yield('content')
+    <div class="loading"></div>
     <footer>@include('layouts.footer')</footer>
 </body>
 <script>
