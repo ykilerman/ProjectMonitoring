@@ -22,7 +22,7 @@
             </td>
             <td>
                 <a onclick="javascript:ajaxLoad('project/list?field=value&sort={{Session::get("project_sort")=="asc"?"desc":"asc"}}','data')" href="#">
-                    Value
+                    Project Cost
                 </a>
                 <i style="font-size: 12px"
                    class="glyphicon {{ Session::get('project_field')=='value'?(Session::get('project_sort')=='asc'?'glyphicon-sort-by-alphabet':'glyphicon-sort-by-alphabet-alt'):'' }}">
@@ -41,17 +41,19 @@
         <tbody>
             <?php $i = 1; ?>
             @foreach($projects as $project)
-                <tr>
-                    <td>{{ $i++ }}</td>
-                    <td class="text-left">{{ $project->name }}</td>
-                    <td>{{ $project->client_name }}</td>
-                    <td>Rp{{ number_format($project->value,2,',','.') }}</td>
-                    <td>{{ $project->status }}</td>
-                    <td>
-                        <button title="Ubah Data" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Ubah</button>
-                        <button title="Hapus Data" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Hapus</button>
-                    </td>
-                </tr>
+                @if((Auth::user()->position == 'Project Coordinator' && $project->user_id == Auth::user()->id) || Auth::user()->position != 'Project Coordinator')
+                    <tr>
+                        <td>{{ $i++ }}</td>
+                        <td class="text-left">{{ $project->name }}</td>
+                        <td>{{ $project->client_name }}</td>
+                        <td>Rp{{ number_format($project->value,2,',','.') }}</td>
+                        <td>{{ $project->status }}</td>
+                        <td>
+                            <button title="Ubah Data" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Update</button>
+                            <button title="Hapus Data" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button>
+                        </td>
+                    </tr>
+                @endif
             @endforeach
         </tbody>
     </table>

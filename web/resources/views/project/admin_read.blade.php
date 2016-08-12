@@ -4,6 +4,7 @@
 
 @section('content')
 
+<meta name="_token" content="{!! csrf_token() !!}" />
 <div class="container">
     <h2>
         Project List
@@ -12,6 +13,7 @@
         </div>
     </h2>
     <hr>
+    <div id="new"></div>
     <div class="row">
         <div class="col-lg-4 form-group">
             <div class="input-group">
@@ -33,80 +35,16 @@
     <hr>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="labelModalTambah" aria-hidden="true" id="modalTambah">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <h4 class="modal-title" id="labelModalTambah">Tambah Data</h4>
-            </div>
-            <div class="modal-body">
-                {{ Form::open(['method'=>'POST','id'=>'frmProject','class'=>'form-horizontal','novalidate'=>""]) }}
-                    <div class="form-group">
-                        {{ Form::label('name','Project Name',['class'=>'col-sm-4 control-label']) }}
-                        <div class="col-sm-8">
-                            {{ Form::text('name',old('name'),['class'=>'form-control','placeholder'=>'Insert Project Name ...','required']) }}
-                        </div>
-                        @if($errors->has())
-                            <span class="label label-danger">{{ $errors->first('name') }}</span>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        {{ Form::label('description','Description',['class'=>'col-sm-4 control-label']) }}
-                        <div class="col-sm-8">
-                            {{ Form::text('description',old('description'),['class'=>'form-control','placeholder'=>'Insert Description ...','required']) }}
-                        </div>
-                        @if($errors->has())
-                            <span class="label label-danger">{{ $errors->first('description') }}</span>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-4">
-                            {{ Form::button('Save',['class'=>'btn btn-primary btn-block','id'=>'btnSave']) }}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<meta name="_token" content="{!! csrf_token() !!}" />
-
 <script>
+$("#new").hide();
 $(document).ready(function(){
     ajaxLoad("{{ url('project/list') }}",'data');
-
     $("#btnAdd").click(function(e){
         e.preventDefault();
-        $("#frmProject").trigger('reset');
-        $("#modalTambah").modal("show");
-    });
-    $("#btnSave").click(function(e){
-        e.preventDefault();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        })
         $(".loading").show();
-        var formdata = {
-            name: $("#name").val(),
-            description: $("#description").val(),
-        };
-
-        console.log(formdata);
-
-        $.ajax({
-            type: "post",
-            url: "{{ url('project/create') }}",
-            data: formdata,
-            success: function(data){
-                $("#modalTambah").modal('hide');
-//                ajaxLoad("{{ url('donor/list') }}",'data');
-            },
-            error: function(data){
-                console.log("Error: "+data);
-            }
+        $("#new").load('{{ url('project/create') }}',function(){
+            $(".loading").hide();
+            $("#new").fadeIn('slow');
         });
     });
 });
