@@ -12,6 +12,10 @@ class HomeController extends Controller
 {
     public function getIndex()
     {
+        if (Auth::user())
+        {
+            return Redirect::to('project');
+        }
         return Redirect::to('login');
     }
     public function getLogin()
