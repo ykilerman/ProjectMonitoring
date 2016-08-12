@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Requests\ValidateProjectAdd;
 use App\Project;
 use Auth;
 use Input;
@@ -36,5 +37,9 @@ class ProjectController extends Controller
         return view('project.admin_list')
             ->with('projects',$projects)
             ->with('total',$total);
+    }
+    public function postCreate(ValidateProjectAdd $validasi)
+    {
+        return "Sukses";
     }
 }

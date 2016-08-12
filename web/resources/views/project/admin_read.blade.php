@@ -47,12 +47,18 @@
                         <div class="col-sm-8">
                             {{ Form::text('name',old('name'),['class'=>'form-control','placeholder'=>'Insert Project Name ...','required']) }}
                         </div>
+                        @if($errors->has())
+                            <span class="label label-danger">{{ $errors->first('name') }}</span>
+                        @endif
                     </div>
                     <div class="form-group">
                         {{ Form::label('description','Description',['class'=>'col-sm-4 control-label']) }}
                         <div class="col-sm-8">
                             {{ Form::text('description',old('description'),['class'=>'form-control','placeholder'=>'Insert Description ...','required']) }}
                         </div>
+                        @if($errors->has())
+                            <span class="label label-danger">{{ $errors->first('description') }}</span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-4">
@@ -70,9 +76,38 @@
 $(document).ready(function(){
     ajaxLoad("{{ url('project/list') }}",'data');
 
-    $("#btnAdd").click(function(){
+    $("#btnAdd").click(function(e){
+        e.preventDefault();
         $("#frmProject").trigger('reset');
         $("#modalTambah").modal("show");
+    });
+    $("#btnSave").click(function(e){
+        e.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        })
+        $(".loading").show();
+        var formdata = {
+            name: $("#name").val(),
+            description: $("#description").val(),
+        };
+
+        console.log(formdata);
+
+        $.ajax({
+            type: "post",
+            url: "{{ url('project/create') }}",
+            data: formdata,
+            success: function(data){
+                $("#modalTambah").modal('hide');
+//                ajaxLoad("{{ url('donor/list') }}",'data');
+            },
+            error: function(data){
+                console.log("Error: "+data);
+            }
+        });
     });
 });
 </script>
