@@ -14,6 +14,7 @@ class ProjectsTableSeeder extends Seeder
     {
         Project::create([
             'name' => 'Project 1',
+            'user_id' => '1',
             'description' => 'Project 1 Seeder',
             'icon_path' => 'images/icon/project1.png',
             'client_name' => 'VDI',
