@@ -5,7 +5,7 @@
                 New Project
             </div>
             <div class="panel-body">
-                {{ Form::open(['method'=>'POST','id'=>'frmProjectAdd','class'=>'form-horizontal','novalidate'=>"",'files'=>true]) }}
+                {{ Form::open(['method'=>'POST','id'=>'frmProjectAdd','class'=>'form-horizontal','novalidate'=>"",'files'=>'true']) }}
                     <div class="form-group">
                         {{ Form::label('name','Project Name',['class'=>'col-sm-3 control-label']) }}
                         <div class="col-sm-9">
