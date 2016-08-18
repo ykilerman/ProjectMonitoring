@@ -17,3 +17,5 @@ Route::get('logout','HomeController@getLogout');
 Route::post('login','HomeController@postLogin');
 
 Route::controller('project','ProjectController');
+
+Route::controller('user','UserController');
