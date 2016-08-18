@@ -1,2 +1,4 @@
 {{-- footer web --}}
-<br> footer
+<div class="container-fluid bg-info text-center">
+    Footer Web
+</div>
