@@ -1,2 +1,4 @@
 {{-- header web --}}
-header web <br>
+<div class="container-fluid bg-primary text-center">
+    Header Web
+</div>

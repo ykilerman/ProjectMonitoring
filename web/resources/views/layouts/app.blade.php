@@ -11,23 +11,29 @@
     {{ Html::script(asset('js/bootstrap.min.js')) }}
     {{ Html::script(asset('js/jquery-ui-1.12.0.custom/jquery-ui.min.js')) }}
 	<style>
-	.loading {
-		background: lightgoldenrodyellow url('{{asset('images/processing.gif')}}') no-repeat center 65%;
-		height: 80px;
-		width: 100px;
-		position: fixed;
-		border-radius: 4px;
-		left: 50%;
-		top: 50%;
-		margin: -40px 0 0 -50px;
-		z-index: 2000;
-		display: none;
-	}
+        .loading {
+            background: lightgoldenrodyellow url('{{asset('images/processing.gif')}}') no-repeat center 65%;
+            height: 80px;
+            width: 100px;
+            position: fixed;
+            border-radius: 4px;
+            left: 50%;
+            top: 50%;
+            margin: -40px 0 0 -50px;
+            z-index: 2000;
+            display: none;
+        }
     </style>
 </head>
 <body>
-	<header>@include('layouts.header')</header>
-    @yield('content')
+    <header>@include('layouts.header')</header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-lg-2 bg-warning">@include('layouts.sidebar')</aside>
+            <section class="col-lg-10 bg-success">@yield('content')</section>
+            <div class="loading"></div>
+        </div>
+    </div>
     <footer>@include('layouts.footer')</footer>
 </body>
 <script>
