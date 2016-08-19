@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 11 Agu 2016 pada 07.58
+-- Generation Time: 19 Agu 2016 pada 09.37
 -- Versi Server: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -41,7 +41,7 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `user_id`, `subject`, `message`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Message Seeder', 'This is a message table seeder.', '2016-08-11 05:42:21', '2016-08-11 05:42:21', NULL);
+(1, 1, 'Message Seeder', 'This is a message table seeder.', '2016-08-19 07:36:35', '2016-08-19 07:36:35', NULL);
 
 -- --------------------------------------------------------
 
@@ -81,7 +81,6 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 ('2014_10_12_000000_create_users_table', 1),
 ('2016_08_09_112049_create_projects_table', 1),
 ('2016_08_09_114452_create_reports_table', 1),
-('2016_08_09_121425_create_project_user_table', 1),
 ('2016_08_09_121815_create_messages_table', 1),
 ('2016_08_09_123823_create_message_details_table', 1),
 ('2016_08_09_133501_create_updating_statuses_table', 1);
@@ -94,6 +93,7 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 
 CREATE TABLE `projects` (
   `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `icon_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE `projects` (
   `value` int(11) NOT NULL,
   `update_schedule` int(11) NOT NULL,
   `last_notification` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('Preparing','On Going','Closed','Deleted','Archived') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Preparing',
+  `status` enum('On Going','Closed','Deleted','Archived') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'On Going',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -110,27 +110,8 @@ CREATE TABLE `projects` (
 -- Dumping data untuk tabel `projects`
 --
 
-INSERT INTO `projects` (`id`, `name`, `description`, `icon_path`, `client_name`, `value`, `update_schedule`, `last_notification`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Project 1', 'Project 1 Seeder', 'images/icon/project1.png', 'VDI', 12000000, 7, '2016-08-11 05:34:01', 'Preparing', '2016-08-11 05:34:01', '2016-08-11 05:36:27');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `project_user`
---
-
-CREATE TABLE `project_user` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `project_id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data untuk tabel `project_user`
---
-
-INSERT INTO `project_user` (`id`, `project_id`, `user_id`) VALUES
-(1, 1, 1);
+INSERT INTO `projects` (`id`, `user_id`, `name`, `description`, `icon_path`, `client_name`, `value`, `update_schedule`, `last_notification`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Project 1', 'Project 1 Seeder', 'images/icon/project1.png', 'VDI', 12000000, 7, '2016-08-19 07:36:35', 'On Going', '2016-08-19 07:36:34', '2016-08-19 07:36:35');
 
 -- --------------------------------------------------------
 
@@ -153,7 +134,7 @@ CREATE TABLE `reports` (
 --
 
 INSERT INTO `reports` (`id`, `project_id`, `highlight`, `description`, `evidence`, `created_at`, `updated_at`) VALUES
-(1, 1, 'initiate project', 'initiate project', 'images/evidence/projectreport1.png', '2016-08-11 05:36:27', '2016-08-11 05:36:27');
+(1, 1, 'initiate project', 'initiate project', 'images/evidence/projectreport1.png', '2016-08-19 07:36:35', '2016-08-19 07:36:35');
 
 -- --------------------------------------------------------
 
@@ -175,7 +156,7 @@ CREATE TABLE `updating_statuses` (
 --
 
 INSERT INTO `updating_statuses` (`id`, `project_id`, `highlight`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Closing Project', 'Project is cleared', '2016-08-11 05:57:36', '2016-08-11 05:57:36');
+(1, 1, 'Closing Project', 'Project is cleared', '2016-08-19 07:36:35', '2016-08-19 07:36:35');
 
 -- --------------------------------------------------------
 
@@ -197,10 +178,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `position`, `remember_token`) VALUES
-(1, 'admin1', '$2y$10$GYxxVu4.ZcKVunVXQm/gLuYV7m0FqNRKl4knHGLH9B0YZ82yod3XW', 'Project Admin 1', 'Project Admin', NULL),
-(2, 'coordinator1', '$2y$10$5fjf2/hzTjsPqnIRBxFqfuiAGDhP1u2rfrCbU0Ce.ax2c7XP57msq', 'Project Coordinator 1', 'Project Coordinator', NULL),
-(3, 'stakeholder1', '$2y$10$uG4NewcqwU7IOtCblG7ALeU1LpIoAHafCiSezH4WZ7s7U.KWO893y', 'Stakeholder 1', 'Stakeholder', NULL),
-(4, 'management1', '$2y$10$IvinYkWfJg9N/DPYoDKgTOTUfp2hqYpqdLzyi9Or5V0tCeME4pmba', 'Management 1', 'Management', NULL);
+(1, 'admin1', '$2y$10$L4KylISvTPxJXhIo.zOr8.uVLBWT1.ZZsS7s7ttcpTRQbYFZ8bwke', 'Project Admin 1', 'Project Admin', NULL),
+(2, 'coordinator1', '$2y$10$y/MtXjhbffIl6l17cygnCOjHRSLX4mW/6A7CIlWwxK3oDA83tlewO', 'Project Coordinator 1', 'Project Coordinator', NULL),
+(3, 'stakeholder1', '$2y$10$pXTAfU5nyoqkZmzalY4qYOYDGIVokY/Q7SU038D4r5SNv6dSRzSfu', 'Stakeholder 1', 'Stakeholder', NULL),
+(4, 'management1', '$2y$10$Ks6b3W0KPAaE814lnJoufuFQgmJdw4O4WonL4OkXuvSPsqgWx4.Jm', 'Management 1', 'Management', NULL);
 
 --
 -- Indexes for dumped tables
@@ -225,15 +206,8 @@ ALTER TABLE `message_details`
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `project_user`
---
-ALTER TABLE `project_user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `project_user_project_id_foreign` (`project_id`),
-  ADD KEY `project_user_user_id_foreign` (`user_id`);
+  ADD KEY `projects_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `reports`
@@ -276,11 +250,6 @@ ALTER TABLE `message_details`
 ALTER TABLE `projects`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `project_user`
---
-ALTER TABLE `project_user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
@@ -313,11 +282,10 @@ ALTER TABLE `message_details`
   ADD CONSTRAINT `message_details_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `project_user`
+-- Ketidakleluasaan untuk tabel `projects`
 --
-ALTER TABLE `project_user`
-  ADD CONSTRAINT `project_user_project_id_foreign` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
-  ADD CONSTRAINT `project_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `projects`
+  ADD CONSTRAINT `projects_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Ketidakleluasaan untuk tabel `reports`

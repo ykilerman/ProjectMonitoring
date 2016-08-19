@@ -22,7 +22,7 @@ class CreateProjectsTable extends Migration
             $table->integer('value');
             $table->integer('update_schedule');
             $table->timestamp('last_notification')->useCurrent();
-            $table->enum('status',['Preparing','On Going','Closed','Deleted','Archived'])->default('Preparing');
+            $table->enum('status',['On Going','Closed','Deleted','Archived'])->default('On Going');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
