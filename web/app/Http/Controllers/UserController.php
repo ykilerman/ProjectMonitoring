@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Auth;
 use Input;
@@ -38,20 +39,6 @@ class UserController extends Controller
         return view('user.list')
             ->with('users',$users)
             ->with('total',$total);
-    }
-    public function getCreate()
-    {
-        return view('user.create');
-    }
-    public function postCreate()
-    {
-        User::create([
-            'name' => Input::get('name'),
-            'username' => Input::get('username'),
-            'password' => bcrypt(Input::get('password')),
-            'position' => Input::get('position'),
-        ]);
-        return "Create user " . Input::get('name') . " is success.";
     }
     public function getUserlistselect()
     {
@@ -97,8 +84,57 @@ class UserController extends Controller
         }
         return response()->json(['valid' => 'true']);
     }
-    public function getTambah(UserCreateRequest $valid)
+    public function getCreate()
     {
         return view('user.tambah');
+    }
+    public function postCreate(UserCreateRequest $valid)
+    {
+        if ($valid)
+        {
+            User::create([
+                'username' => Input::get('username'),
+                'password' => bcrypt(Input::get('password')),
+                'name' => Input::get('name'),
+                'position' => Input::get('position'),
+            ]);
+            return Redirect::to('user')->with('message', "New user is created.");
+        }
+    }
+    public function getUpdate()
+    {
+        $user = User::find(Input::get('id'));
+        return view('user.update')->with('user',$user);
+    }
+    public function postUpdate(UserUpdateRequest $valid)
+    {
+        if($valid)
+        {
+            $user = User::find(Input::get('id'));
+            $user->name = Input::get('name');
+            $user->username = Input::get('username');
+            $user->position = Input::get('position');
+            $user->save();
+            return Redirect::to('user')->with('message','The user is updated.');
+        }
+    }
+    public function getDelete()
+    {
+        $user = User::find(Input::get('id'));
+        return view('user.delete')->with('user',$user);
+    }
+    public function getCreateajax()
+    {
+        return view('user.create');
+    }
+    public function postCreateajax()
+    {
+        User::create([
+            'name' => Input::get('name'),
+            'username' => Input::get('username'),
+            'password' => bcrypt(Input::get('password')),
+            'position' => Input::get('position'),
+        ]);
+        return "Create user " . Input::get('name') . " is success.";
     }
 }

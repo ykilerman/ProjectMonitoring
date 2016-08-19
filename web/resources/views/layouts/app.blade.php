@@ -27,10 +27,12 @@
 </head>
 <body>
     <header>@include('layouts.header')</header>
-    <div class="row">
-        <aside class="col-lg-2 bg-warning">@include('layouts.sidebar')</aside>
-        <section class="col-lg-10 bg-success">@yield('content')</section>
-        <div class="loading"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-lg-2 bg-warning">@include('layouts.sidebar')</aside>
+            <section class="col-lg-10 bg-success">@yield('content')</section>
+            <div class="loading"></div>
+        </div>
     </div>
     <footer>@include('layouts.footer')</footer>
 </body>

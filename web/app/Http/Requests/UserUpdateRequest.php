@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Input;
 
-class UserCreateRequest extends Request
+class UserUpdateRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +25,7 @@ class UserCreateRequest extends Request
     public function rules()
     {
         return [
-            'username' => 'required|unique:users,username',
-            'password'  => 'required',
+            'username' => 'required|unique:users,username,'.Input::get('id'),
             'name' => 'required',
             'position' => 'required',
         ];
@@ -35,7 +35,6 @@ class UserCreateRequest extends Request
         return [
             'username.required' => 'Username cannot empty.',
             'username.unique' => 'Username is already taken.',
-            'password.required' => 'Password cannot empty.',
             'name.required' => 'Name cannot empty.',
             'position.required' => 'Position cannot empty.',
         ];

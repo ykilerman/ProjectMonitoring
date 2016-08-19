@@ -27,6 +27,6 @@
 <p></p>
 <h3>Setting</h3>
 <ul>
-    <li><a href="#">{{ Auth::user() ? Auth::user()->name : "" }}</a></li>
+    <li><a href="#">Change Password</a></li>
     <li><a href="{{ url('logout') }}">Log Out</a></li>
 </ul>

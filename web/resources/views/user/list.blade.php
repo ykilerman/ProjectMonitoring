@@ -42,8 +42,8 @@
                         <td>{{ $user->username }}</td>
                         <td>{{ $user->position }}</td>
                         <td>
-                            <button title="Ubah Data" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Update</button>
-                            <button title="Hapus Data" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button>
+                            <a href="{{ url('user/update?id='.$user->id) }}" title="Update" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Update</a>
+                            <a href="{{ url('user/delete?id='.$user->id) }}" title="Delete" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button>
                         </td>
                     </tr>
                 @endif
@@ -52,6 +52,12 @@
     </table>
     <p>
         Total Data : {{ $total }}
-        <div class="pull-right">{{ $users->render() }}</div>
+        <div class="pull-right">{!! str_replace('/?','?',$users->render()) !!}</div>
     </p>
 </div>
+<script>
+    $('.pagination a').on('click', function (event) {
+        event.preventDefault();
+        ajaxLoad($(this).attr('href'),'data');
+    });
+</script>
