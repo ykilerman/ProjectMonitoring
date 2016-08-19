@@ -123,6 +123,11 @@ class UserController extends Controller
         $user = User::find(Input::get('id'));
         return view('user.delete')->with('user',$user);
     }
+    public function postDelete()
+    {
+        User::destroy(Input::get('id'));
+        return Redirect::to('user')->with('message','The user is deleted.');
+    }
     public function getCreateajax()
     {
         return view('user.create');
