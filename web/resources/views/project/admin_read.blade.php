@@ -1,23 +1,19 @@
 @extends('layouts.app')
-
-@section('title') Projects | @endsection
-
+@section('title') Users | @endsection
 @section('content')
 
-<meta name="_token" content="{!! csrf_token() !!}" />
 <h2>
-    Project List
+    User List
     <div class="pull-right">
-        <button id="btnAdd" class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> New</button>
+        <a href="{{ url('project/create') }}" class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> New</a>
     </div>
 </h2>
 <hr>
-<div id="new"></div>
 <div class="row">
     <div class="col-lg-4 form-group">
         <div class="input-group">
             <input class="form-control" id="search" value="{{ Session::get('project_search') }}"
-                   onkeyup="if ((event.keyCode >= 65 && event.keyCode <= 90) || event.keyCode == 13 || event.keyCode == 8 || event.keyCode == 46) ajaxLoad('{{url('project/list')}}?ok=1&search='+this.value,'data')"
+                   onkeyup="if ((event.keyCode >= 48 && event.keyCode <= 90) || event.keyCode == 13 || event.keyCode == 8 || event.keyCode == 46) ajaxLoad('{{url('project/list')}}?ok=1&search='+this.value,'data')"
                    placeholder="Find name ..."
                    type="text"
                    autofocus>
@@ -30,22 +26,21 @@
         </div>
     </div>
 </div>
+@if(Session::has('message'))
+    <div id="message" class="alert alert-success">
+        {{ Session::get('message') }}
+    </div>
+@endif
 <div id="data"></div>
-<hr>
 
 <script>
-$("#new").hide();
-$(document).ready(function(){
-    ajaxLoad("{{ url('project/list') }}",'data');
-    $("#btnAdd").click(function(e){
-        e.preventDefault();
-        $(".loading").show();
-        $("#new").load('{{ url('project/create') }}',function(){
-            $(".loading").hide();
-            $("#new").fadeIn('slow');
+    $(document).ready(function(){
+        ajaxLoad("{{ url('project/list') }}",'data');
+
+        $("#message").click(function(){
+            $(this).hide('slow');
         });
     });
-});
 </script>
 
 @endsection
