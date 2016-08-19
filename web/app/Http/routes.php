@@ -15,6 +15,8 @@ Route::get('','HomeController@getIndex');
 Route::get('login','HomeController@getLogin');
 Route::get('logout','HomeController@getLogout');
 Route::post('login','HomeController@postLogin');
+Route::get('changepassword','HomeController@getChangepassword');
+Route::post('changepassword','HomeController@postChangepassword');
 
 Route::controller('project','ProjectController');
 
