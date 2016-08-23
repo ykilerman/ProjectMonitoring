@@ -18,32 +18,32 @@ class APIController extends Controller
 
         if(!$user)
         {
-            $data = [
+            $data = [[
                 'uid' => '',
                 'username' => '',
                 'name' => 'erroruser',
                 'position' => '',
-            ];
+            ]];
         }
         else
         {
             if(!Hash::check(Input::get('password'), $user->password))
             {
-                $data = [
+                $data = [[
                     'uid' => '',
                     'username' => '',
                     'name' => 'errorpass',
                     'position' => '',
-                ];
+                ]];
             }
             else
             {
-                $data = [
+                $data = [[
                     'uid' => $user->id,
                     'username' => $user->username,
                     'name' => $user->username,
                     'position' => $user->position,
-                ];
+                ]];
             }
         }
         return $data;
@@ -54,32 +54,32 @@ class APIController extends Controller
 
         if(!$user)
         {
-            $data = [
+            $data = [[
                 'uid' => '',
                 'username' => '',
                 'name' => 'erroruser',
                 'position' => '',
-            ];
+            ]];
         }
         else
         {
             if(!Hash::check(Input::get('password'), $user->password))
             {
-                $data = [
+                $data = [[
                     'uid' => '',
                     'username' => '',
                     'name' => 'errorpass',
                     'position' => '',
-                ];
+                ]];
             }
             else
             {
-                $data = [
+                $data = [[
                     'uid' => $user->id,
                     'username' => $user->username,
                     'name' => $user->username,
                     'position' => $user->position,
-                ];
+                ]];
             }
         }
         return $data;
