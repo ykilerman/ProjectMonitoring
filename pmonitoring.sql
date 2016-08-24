@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 19 Agu 2016 pada 09.37
+-- Generation Time: 24 Agu 2016 pada 08.07
 -- Versi Server: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -41,7 +41,7 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `user_id`, `subject`, `message`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Message Seeder', 'This is a message table seeder.', '2016-08-19 07:36:35', '2016-08-19 07:36:35', NULL);
+(1, 1, 'Message Seeder', 'This is a message table seeder.', '2016-08-24 06:06:50', '2016-08-24 06:06:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -94,8 +94,9 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 CREATE TABLE `projects` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
+  `type` enum('Consultation','Procurement','Consultation and Procurement') COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
   `icon_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `client_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `value` int(11) NOT NULL,
@@ -110,8 +111,11 @@ CREATE TABLE `projects` (
 -- Dumping data untuk tabel `projects`
 --
 
-INSERT INTO `projects` (`id`, `user_id`, `name`, `description`, `icon_path`, `client_name`, `value`, `update_schedule`, `last_notification`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Project 1', 'Project 1 Seeder', 'images/icon/project1.png', 'VDI', 12000000, 7, '2016-08-19 07:36:35', 'On Going', '2016-08-19 07:36:34', '2016-08-19 07:36:35');
+INSERT INTO `projects` (`id`, `user_id`, `type`, `name`, `description`, `icon_path`, `client_name`, `value`, `update_schedule`, `last_notification`, `status`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Consultation', 'Project 1', 'Project 1 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'On Going', '2016-08-24 06:06:49', '2016-08-24 06:06:50'),
+(2, 2, 'Consultation', 'Project 2', 'Project 2 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'Deleted', '2016-08-24 06:06:49', '2016-08-24 06:06:49'),
+(3, 2, 'Procurement', 'Project 3', 'Project 3 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'Closed', '2016-08-24 06:06:49', '2016-08-24 06:06:49'),
+(4, 2, 'Consultation and Procurement', 'Project 4', 'Project 4 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'Archived', '2016-08-24 06:06:49', '2016-08-24 06:06:49');
 
 -- --------------------------------------------------------
 
@@ -122,9 +126,13 @@ INSERT INTO `projects` (`id`, `user_id`, `name`, `description`, `icon_path`, `cl
 CREATE TABLE `reports` (
   `id` int(10) UNSIGNED NOT NULL,
   `project_id` int(10) UNSIGNED NOT NULL,
-  `highlight` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `evidence` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `highlight` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `activity` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `activity_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `income` int(11) NOT NULL,
+  `income_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `expense` int(11) NOT NULL,
+  `expense_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -133,8 +141,8 @@ CREATE TABLE `reports` (
 -- Dumping data untuk tabel `reports`
 --
 
-INSERT INTO `reports` (`id`, `project_id`, `highlight`, `description`, `evidence`, `created_at`, `updated_at`) VALUES
-(1, 1, 'initiate project', 'initiate project', 'images/evidence/projectreport1.png', '2016-08-19 07:36:35', '2016-08-19 07:36:35');
+INSERT INTO `reports` (`id`, `project_id`, `highlight`, `activity`, `activity_path`, `income`, `income_path`, `expense`, `expense_path`, `created_at`, `updated_at`) VALUES
+(1, 1, 'initiate project', 'initiate project', 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/activity1-20160824125700.jpg', 0, 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/income1-20160824125700.jpg', 0, 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/expense1-20160824125700.jpg', '2016-08-24 06:06:50', '2016-08-24 06:06:50');
 
 -- --------------------------------------------------------
 
@@ -156,7 +164,7 @@ CREATE TABLE `updating_statuses` (
 --
 
 INSERT INTO `updating_statuses` (`id`, `project_id`, `highlight`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Closing Project', 'Project is cleared', '2016-08-19 07:36:35', '2016-08-19 07:36:35');
+(1, 1, 'Closing Project', 'Project is cleared', '2016-08-24 06:06:50', '2016-08-24 06:06:50');
 
 -- --------------------------------------------------------
 
@@ -178,10 +186,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `position`, `remember_token`) VALUES
-(1, 'admin1', '$2y$10$L4KylISvTPxJXhIo.zOr8.uVLBWT1.ZZsS7s7ttcpTRQbYFZ8bwke', 'Project Admin 1', 'Project Admin', NULL),
-(2, 'coordinator1', '$2y$10$y/MtXjhbffIl6l17cygnCOjHRSLX4mW/6A7CIlWwxK3oDA83tlewO', 'Project Coordinator 1', 'Project Coordinator', NULL),
-(3, 'stakeholder1', '$2y$10$pXTAfU5nyoqkZmzalY4qYOYDGIVokY/Q7SU038D4r5SNv6dSRzSfu', 'Stakeholder 1', 'Stakeholder', NULL),
-(4, 'management1', '$2y$10$Ks6b3W0KPAaE814lnJoufuFQgmJdw4O4WonL4OkXuvSPsqgWx4.Jm', 'Management 1', 'Management', NULL);
+(1, 'admin1', '$2y$10$N1uQCylYpkqM2F87lKa2iOahxapmBDq/IZ4rYNLHWiWSDaUbPRBLO', 'Project Admin 1', 'Project Admin', NULL),
+(2, 'coordinator1', '$2y$10$bp0V57GFI2yrsc0XKaEGn.e1EYKwT6gniCsTa1NI.4y5sM.nNBu32', 'Project Coordinator 1', 'Project Coordinator', NULL),
+(3, 'stakeholder1', '$2y$10$u8hkl88p0MRWB.ZdKrprDOH0941UPouIKW4DLOFqwBieKVQTRyLTe', 'Stakeholder 1', 'Stakeholder', NULL),
+(4, 'management1', '$2y$10$JsOF9P8vDeJbAPeuMrNq3eGRIHaJnMkPgLGQQgAAqz.dJQo95/QGq', 'Management 1', 'Management', NULL);
 
 --
 -- Indexes for dumped tables
@@ -248,7 +256,7 @@ ALTER TABLE `message_details`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `reports`
 --
