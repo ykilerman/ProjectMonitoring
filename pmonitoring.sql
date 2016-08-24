@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 24 Agu 2016 pada 08.15
+-- Generation Time: 24 Agu 2016 pada 08.30
 -- Versi Server: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -93,9 +93,9 @@ CREATE TABLE `reports` (
   `highlight` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `activity` longtext COLLATE utf8_unicode_ci NOT NULL,
   `activity_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `income` int(11) NOT NULL,
+  `income` int(11) DEFAULT NULL,
   `income_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `expense` int(11) NOT NULL,
+  `expense` int(11) DEFAULT NULL,
   `expense_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -136,10 +136,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `position`, `remember_token`) VALUES
-(1, 'admin1', '$2y$10$N1uQCylYpkqM2F87lKa2iOahxapmBDq/IZ4rYNLHWiWSDaUbPRBLO', 'Project Admin 1', 'Project Admin', NULL),
-(2, 'coordinator1', '$2y$10$bp0V57GFI2yrsc0XKaEGn.e1EYKwT6gniCsTa1NI.4y5sM.nNBu32', 'Project Coordinator 1', 'Project Coordinator', NULL),
-(3, 'stakeholder1', '$2y$10$u8hkl88p0MRWB.ZdKrprDOH0941UPouIKW4DLOFqwBieKVQTRyLTe', 'Stakeholder 1', 'Stakeholder', NULL),
-(4, 'management1', '$2y$10$JsOF9P8vDeJbAPeuMrNq3eGRIHaJnMkPgLGQQgAAqz.dJQo95/QGq', 'Management 1', 'Management', NULL);
+(1, 'admin1', '$2y$10$zEpajH33isV7pd68duf6SeCW.njzpu3DLlWKD0kU0Eqhr2mR57Lim', 'Project Admin 1', 'Project Admin', NULL),
+(2, 'coordinator1', '$2y$10$JWgIHDOOxpuG7CuoRLGD2uVbILmHB6vRGeZBHlv4dNVg5fRJXYP7a', 'Project Coordinator 1', 'Project Coordinator', NULL),
+(3, 'stakeholder1', '$2y$10$0MFSS2jeYhQuyQijqOAckuMhLLy0oEoaFuPNSawpp1cErkvEitObi', 'Stakeholder 1', 'Stakeholder', NULL),
+(4, 'management1', '$2y$10$ZOWW0Mr6LgJfVxaow0t.3uUW80hpUYg41M6V9H41to6SnVyX4HRia', 'Management 1', 'Management', NULL);
 
 --
 -- Indexes for dumped tables
