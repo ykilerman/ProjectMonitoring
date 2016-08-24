@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 24 Agu 2016 pada 08.07
+-- Generation Time: 24 Agu 2016 pada 08.15
 -- Versi Server: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -36,13 +36,6 @@ CREATE TABLE `messages` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data untuk tabel `messages`
---
-
-INSERT INTO `messages` (`id`, `user_id`, `subject`, `message`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Message Seeder', 'This is a message table seeder.', '2016-08-24 06:06:50', '2016-08-24 06:06:50', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -55,13 +48,6 @@ CREATE TABLE `message_details` (
   `user_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data untuk tabel `message_details`
---
-
-INSERT INTO `message_details` (`id`, `message_id`, `user_id`) VALUES
-(1, 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -72,18 +58,6 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data untuk tabel `migrations`
---
-
-INSERT INTO `migrations` (`migration`, `batch`) VALUES
-('2014_10_12_000000_create_users_table', 1),
-('2016_08_09_112049_create_projects_table', 1),
-('2016_08_09_114452_create_reports_table', 1),
-('2016_08_09_121815_create_messages_table', 1),
-('2016_08_09_123823_create_message_details_table', 1),
-('2016_08_09_133501_create_updating_statuses_table', 1);
 
 -- --------------------------------------------------------
 
@@ -107,16 +81,6 @@ CREATE TABLE `projects` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data untuk tabel `projects`
---
-
-INSERT INTO `projects` (`id`, `user_id`, `type`, `name`, `description`, `icon_path`, `client_name`, `value`, `update_schedule`, `last_notification`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Consultation', 'Project 1', 'Project 1 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'On Going', '2016-08-24 06:06:49', '2016-08-24 06:06:50'),
-(2, 2, 'Consultation', 'Project 2', 'Project 2 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'Deleted', '2016-08-24 06:06:49', '2016-08-24 06:06:49'),
-(3, 2, 'Procurement', 'Project 3', 'Project 3 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'Closed', '2016-08-24 06:06:49', '2016-08-24 06:06:49'),
-(4, 2, 'Consultation and Procurement', 'Project 4', 'Project 4 Seeder', 'http://localhost/ProjectMonitoring/web/storage/app/images/icon/project1-20160823100135.jpg', 'VDI', 12000000, 7, '2016-08-24 06:06:49', 'Archived', '2016-08-24 06:06:49', '2016-08-24 06:06:49');
-
 -- --------------------------------------------------------
 
 --
@@ -137,13 +101,6 @@ CREATE TABLE `reports` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data untuk tabel `reports`
---
-
-INSERT INTO `reports` (`id`, `project_id`, `highlight`, `activity`, `activity_path`, `income`, `income_path`, `expense`, `expense_path`, `created_at`, `updated_at`) VALUES
-(1, 1, 'initiate project', 'initiate project', 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/activity1-20160824125700.jpg', 0, 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/income1-20160824125700.jpg', 0, 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/expense1-20160824125700.jpg', '2016-08-24 06:06:50', '2016-08-24 06:06:50');
-
 -- --------------------------------------------------------
 
 --
@@ -158,13 +115,6 @@ CREATE TABLE `updating_statuses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data untuk tabel `updating_statuses`
---
-
-INSERT INTO `updating_statuses` (`id`, `project_id`, `highlight`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Closing Project', 'Project is cleared', '2016-08-24 06:06:50', '2016-08-24 06:06:50');
 
 -- --------------------------------------------------------
 
