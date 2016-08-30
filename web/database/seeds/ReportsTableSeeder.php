@@ -15,8 +15,12 @@ class ReportsTableSeeder extends Seeder
         Report::create([
             'project_id' => '1',
             'highlight' => 'initiate project',
-            'description' => 'initiate project',
-            'evidence' => 'images/evidence/projectreport1.png',
+            'activity' => 'initiate project',
+            'activity_path' => 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/activity1-20160824125700.jpg',
+            'income' => '0',
+            'income_path' => 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/income1-20160824125700.jpg',
+            'expense' => '0',
+            'expense_path' => 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/expense1-20160824125700.jpg',
         ]);
     }
 }

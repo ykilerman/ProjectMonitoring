@@ -19,5 +19,6 @@ Route::get('changepassword','HomeController@getChangepassword');
 Route::post('changepassword','HomeController@postChangepassword');
 
 Route::controller('project','ProjectController');
-
+Route::controller('api','APIController');
 Route::controller('user','UserController');
+Route::controller('report','ReportController');

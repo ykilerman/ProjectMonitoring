@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title') Projects | @endsection
-
 @section('content')
 
 <meta name="_token" content="{!! csrf_token() !!}" />

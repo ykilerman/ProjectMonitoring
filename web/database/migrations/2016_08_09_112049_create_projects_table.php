@@ -15,8 +15,9 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->enum('type',['Consultation','Procurement','Consultation and Procurement']);
             $table->string('name',100);
-            $table->string('description');
+            $table->longText('description');
             $table->string('icon_path');
             $table->string('client_name',50);
             $table->integer('value');

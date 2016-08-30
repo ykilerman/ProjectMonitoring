@@ -17,6 +17,7 @@ class CreateMessagesTable extends Migration
             $table->integer('user_id')->unsigned(); //sender's user_id
             $table->string('subject',100);
             $table->text('message');
+            $table->enum('read',['0','1'])->default('0');
             $table->timestamps();
             $table->softDeletes();
 
