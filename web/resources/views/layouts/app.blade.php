@@ -29,8 +29,8 @@
     <header>@include('layouts.header')</header>
     <div class="container-fluid">
         <div class="row">
-            <aside class="col-lg-2 bg-warning">@include('layouts.sidebar')</aside>
-            <section class="col-lg-10 bg-success">@yield('content')</section>
+            <aside class="col-lg-2 col-md-2 col-sm-2 col-xs-12">@include('layouts.sidebar')</aside>
+            <section class="col-lg-10 col-md-10 col-sm-10 col-xs-12">@yield('content')</section>
             <div class="loading"></div>
         </div>
     </div>
