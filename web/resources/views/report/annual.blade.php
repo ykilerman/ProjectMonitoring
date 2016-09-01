@@ -1,18 +1,15 @@
 @extends('layouts.app')
-@section('title') Month Report | @endsection
+@section('title') Annual Report | @endsection
 @section('content')
 <?php
-$now = date('Y');
+    $now = date('Y');
 ?>
 <h2>
-    Month Report
+    Annual Report
 </h2>
 <hr>
 <div class="row form-group">
-    {{ Form::label('month','Select Month',['class' => 'control-label col-lg-2']) }}
-    <div class="col-lg-2">
-        {{ Form::selectMonth('month',Session::get('report_month'),['class' => 'form-control', 'id' => 'selectMonth']) }}
-    </div>
+    {{ Form::label('year','Select Year',['class' => 'control-label col-lg-2']) }}
     <div class="col-lg-2">
         {{ Form::selectRange('year', $now, $now-15, Session::get('report_year'), ['class' => 'form-control', 'id' => 'selectYear']) }}
     </div>
@@ -26,16 +23,13 @@ $now = date('Y');
 
 <script>
     $(document).ready(function(){
-        ajaxLoad("{{ url('report/listmonth') }}",'data');
+        ajaxLoad("{{ url('report/listannual') }}",'data');
 
         $("#message").click(function(){
             $(this).hide('slow');
         });
-        $("#selectMonth").change(function(){
-            ajaxLoad("{{ url('report/listmonth?month=') }}" + $(this).val(), 'data');
-        });
         $("#selectYear").change(function(){
-            ajaxLoad("{{ url('report/listmonth?year=') }}" + $(this).val(), 'data');
+            ajaxLoad("{{ url('report/listannual?year=') }}" + $(this).val(), 'data');
         });
     });
 </script>

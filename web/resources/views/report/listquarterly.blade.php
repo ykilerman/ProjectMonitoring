@@ -10,7 +10,7 @@
                 #
             </td>
             <td>
-                <a onclick="javascript:ajaxLoad('report/listmonth?field=updated_at&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
+                <a onclick="javascript:ajaxLoad('report/listquarterly?field=updated_at&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
                     Time
                 </a>
                 <i style="font-size: 12px"
@@ -18,7 +18,7 @@
                 </i>
             </td>
             <td>
-                <a onclick="javascript:ajaxLoad('report/listmonth?field=name&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
+                <a onclick="javascript:ajaxLoad('report/listquarterly?field=name&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
                     Project Name
                 </a>
                 <i style="font-size: 12px"
@@ -29,7 +29,7 @@
                 Highlight
             </td>
             <td>
-                <a onclick="javascript:ajaxLoad('report/listmonth?field=income&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
+                <a onclick="javascript:ajaxLoad('report/listquarterly?field=income&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
                     Income
                 </a>
                 <i style="font-size: 12px"
@@ -37,7 +37,7 @@
                 </i>
             </td>
             <td>
-                <a onclick="javascript:ajaxLoad('report/listmonth?field=expense&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
+                <a onclick="javascript:ajaxLoad('report/listquarterly?field=expense&sort={{Session::get("report_sort")=="asc"?"desc":"asc"}}','data')" href="#">
                     Expense
                 </a>
                 <i style="font-size: 12px"

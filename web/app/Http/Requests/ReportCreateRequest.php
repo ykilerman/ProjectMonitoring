@@ -13,7 +13,7 @@ class ReportCreateRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,19 @@ class ReportCreateRequest extends Request
     public function rules()
     {
         return [
-            //
+            'highlight' => 'required',
+            'project_id' => 'required',
+            'activity' => 'required',
+            'activity_path' => 'required',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'highlight.required' => 'Highlight is empty.',
+            'project_id' => 'Error Authentication.',
+            'activity.required' => 'Activity is empty.',
+            'activity_path.required' => 'Activity Evidence is empty.'
         ];
     }
 }
