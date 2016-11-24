@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\ChangePassRequest;
+use App\Notification;
 use Auth;
 use Input;
 use Redirect;
@@ -66,5 +67,15 @@ class HomeController extends Controller
 
             return Redirect::to('changepassword')->with('message','Your Password is changed.');
         }
+    }
+    public function getMenuNotif()
+    {
+        $notifications = Notification::all();
+        return view('home.menuNotif')->with('notifications',$notifications);
+    }
+    public function getNotification()
+    {
+        $notifications = Notification::all();
+        return view('home.notification')->with('notifications',$notifications);
     }
 }

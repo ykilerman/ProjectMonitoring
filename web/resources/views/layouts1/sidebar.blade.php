@@ -6,7 +6,8 @@
     aside h3 {
         border: 2px outset #eee;
         border-radius: 5px 20px;
-        background-color: #eee;
+        background: linear-gradient(to bottom left, rgba(0,0,255,0.3), rgba(0,0,255,0.1));
+/*        background-color: rgba(120,120,255,0.2);*/
         padding: 5px 7px;
         font-family: verdana;
     }

@@ -23,18 +23,25 @@
             z-index: 2000;
             display: none;
         }
+        html, body {
+            height: 100%;
+            font-family: gotham, verdana;
+            font-size: 1em;
+        }
+        .wrap {
+            min-height: 514px;
+        }
     </style>
 </head>
 <body>
     <header>@include('layouts.header')</header>
-    <div class="container-fluid">
-        <div class="row">
-            <aside class="col-lg-2 col-md-2 col-sm-2 col-xs-12">@include('layouts.sidebar')</aside>
-            <section class="col-lg-10 col-md-10 col-sm-10 col-xs-12">@yield('content')</section>
+    <div class="wrap" style="min-height: 531px;">
+        <div id="main" class="container-fluid clear-top">
+            <section>@yield('content')</section>
             <div class="loading"></div>
         </div>
     </div>
-    <footer>@include('layouts.footer')</footer>
+    <footer class="footer">@include('layouts.footer')</footer>
 </body>
 <script>
 function ajaxLoad(filename, content) {

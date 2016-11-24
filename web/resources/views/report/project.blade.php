@@ -11,7 +11,7 @@
     </div>
 </div>
 <h2>
-    Report List <a href="{{ url('report/create?id='.$project->id) }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"> </i> New</a>
+    Report List
 </h2>
 @if(Session::has('message'))
     <div id="message" class="alert alert-success">

@@ -15,12 +15,12 @@
         </figure>
     </div>
     <div class="col-lg-9">
-        <p></p>
-        <p>Project Name : <strong><big>{{ $report->project->name }}</big></strong></p>
+        <p>Project Name : <a href="{{ url('project/detail?id='.$report->project_id) }}"><strong><big>{{ $report->project->name }}</big></strong></a></p>
         <p>Project Time : {{ date_format($report->project->created_at,'d M Y - H:i:s') }}</p>
         <p>Project Cost : Rp{{ number_format($report->project->value,0,',','.') }}</p>
         <p>Project Coordinator : {{ $report->project->user->name }}</p>
         <p>Client Name : {{ $report->project->client_name }}</p>
+        <p>Project Type : {{ $report->project->type }}</p>
     </div>
 </div>
 <h3>Report {{ date_format($report->created_at,'d M Y - H:i:s') }}</h3>
@@ -55,8 +55,7 @@
     </div>
 </div>
 <p>
-    <a href="{{ url('report/edit?id='.$report->id) }}" class="btn btn-lg btn-primary">Edit Report Detail</a>
-    <button onclick="javascript:history.back()" class="btn btn-lg btn-primary">Back</button>
+    <button onclick="javascript:history.back()" class="btn btn-lg btn-info">Back</button>
 </p>
 
 <script>

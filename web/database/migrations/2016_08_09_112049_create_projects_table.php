@@ -23,6 +23,7 @@ class CreateProjectsTable extends Migration
             $table->integer('value');
             $table->integer('update_schedule');
             $table->timestamp('last_notification')->useCurrent();
+            $table->float('percent')->default('0');
             $table->enum('status',['On Going','Closed','Deleted','Archived'])->default('On Going');
             $table->timestamps();
 

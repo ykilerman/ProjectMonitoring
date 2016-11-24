@@ -13,7 +13,7 @@ class ReportUpdateRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,17 @@ class ReportUpdateRequest extends Request
     public function rules()
     {
         return [
-            //
+            'highlight' => 'required',
+            'project_id' => 'required',
+            'activity' => 'required',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'highlight.required' => 'Highlight is empty.',
+            'project_id' => 'Error Authentication.',
+            'activity.required' => 'Activity is empty.',
         ];
     }
 }

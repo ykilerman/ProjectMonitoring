@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-lg-4 col-lg-offset-4">
-        <div class="panel panel-default">
+        <div class="panel panel-danger">
             <div class="panel-heading">
                 <i class="glyphicon glyphicon-user"></i> Login
                 @if(Session::has('message'))
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-lg-offset-3 col-lg-4">
-                    {{ Form::submit('Login',['class' => 'btn btn-primary']) }}
+                    {{ Form::submit('Login',['class' => 'btn btn-danger']) }}
                 </div>
                 {{ Form::close() }}
             </div>

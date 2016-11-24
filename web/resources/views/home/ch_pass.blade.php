@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="col-lg-offset-2 col-lg-2">
-        {{ Form::submit('Change',['class'=>'btn btn-primary btn-block','id'=>'btnSave']) }}
+        {{ Form::submit('Change',['class'=>'btn btn-danger btn-block','id'=>'btnSave']) }}
     </div>
 {{ Form::close() }}
 

@@ -156,6 +156,70 @@ class ProjectController extends Controller
             ->with('projects',$projects)
             ->with('total',$total);
     }
+    public function getStakelist()
+    {
+        Session::put('project_search', Input::has('ok') ? Input::get('search') : (Session::has('project_search') ? Session::get('project_search') : ''));
+        Session::put('project_field', Input::has('field') ? Input::get('field') : (Session::has('project_field') ? Session::get('project_field') : 'name'));
+        Session::put('project_sort', Input::has('sort') ? Input::get('sort') : (Session::has('project_sort') ? Session::get('project_sort') : 'asc'));
+        $projects = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','On Going')
+            ->orderBy(Session::get('project_field'), Session::get('project_sort'))
+            ->paginate(6);
+        $total = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','On Going')
+            ->count();
+        return view('project.stakeholder_list')
+            ->with('projects',$projects)
+            ->with('total',$total);
+    }
+    public function getStakelistclosed()
+    {
+        Session::put('project_search', Input::has('ok') ? Input::get('search') : (Session::has('project_search') ? Session::get('project_search') : ''));
+        Session::put('project_field', Input::has('field') ? Input::get('field') : (Session::has('project_field') ? Session::get('project_field') : 'name'));
+        Session::put('project_sort', Input::has('sort') ? Input::get('sort') : (Session::has('project_sort') ? Session::get('project_sort') : 'asc'));
+        $projects = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','Closed')
+            ->orderBy(Session::get('project_field'), Session::get('project_sort'))
+            ->paginate(6);
+        $total = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','Closed')
+            ->count();
+        return view('project.stakeholder_list')
+            ->with('projects',$projects)
+            ->with('total',$total);
+    }
+    public function getStakelistarchived()
+    {
+        Session::put('project_search', Input::has('ok') ? Input::get('search') : (Session::has('project_search') ? Session::get('project_search') : ''));
+        Session::put('project_field', Input::has('field') ? Input::get('field') : (Session::has('project_field') ? Session::get('project_field') : 'name'));
+        Session::put('project_sort', Input::has('sort') ? Input::get('sort') : (Session::has('project_sort') ? Session::get('project_sort') : 'asc'));
+        $projects = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','Archived')
+            ->orderBy(Session::get('project_field'), Session::get('project_sort'))
+            ->paginate(6);
+        $total = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','Archived')
+            ->count();
+        return view('project.stakeholder_list')
+            ->with('projects',$projects)
+            ->with('total',$total);
+    }
+    public function getStakelistdeleted()
+    {
+        Session::put('project_search', Input::has('ok') ? Input::get('search') : (Session::has('project_search') ? Session::get('project_search') : ''));
+        Session::put('project_field', Input::has('field') ? Input::get('field') : (Session::has('project_field') ? Session::get('project_field') : 'name'));
+        Session::put('project_sort', Input::has('sort') ? Input::get('sort') : (Session::has('project_sort') ? Session::get('project_sort') : 'asc'));
+        $projects = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','Deleted')
+            ->orderBy(Session::get('project_field'), Session::get('project_sort'))
+            ->paginate(6);
+        $total = Project::where('name', 'like', '%' . Session::get('project_search') . '%')
+            ->where('status','Deleted')
+            ->count();
+        return view('project.stakeholder_list')
+            ->with('projects',$projects)
+            ->with('total',$total);
+    }
     public function getCreate()
     {
         $users = User::where('position','=','Project Coordinator')
@@ -204,8 +268,20 @@ class ProjectController extends Controller
     public function getDetail()
     {
         $project = Project::find(Input::get('id'));
-
-        return view('project.admin_detail')->with('project',$project);
+        if(Auth::user()->position == 'Project Admin' || Auth::user()->position == 'Project Coordinator')
+        {
+            if($project->status == 'On Going')
+                return view('project.admin_detail')->with('project',$project);
+            else
+                return view('project.admin_detail_noedit')->with('project',$project);
+        }
+        else
+        {
+            if($project->status == 'On Going')
+                return view('project.stakeholder_detail')->with('project',$project);
+            else
+                return view('project.stakeholder_detail_noedit')->with('project',$project);
+        }
     }
     public function getEdit()
     {

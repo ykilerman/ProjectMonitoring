@@ -41,7 +41,12 @@
             </td>
         </thead>
         <tbody>
-            <?php $i = 1 ?>
+            <?php 
+                $i = 1;
+                $income = 0;
+                $expense = 0;
+            
+            ?>
             @foreach($reports as $report)
                 <tr onclick="javascript:window.location.href='{{ url('report/detail?id='.$report->id) }}'">
                     <td>{{ $i++ }}</td>
@@ -50,10 +55,21 @@
                     <td>{{ $report->income }}</td>
                     <td>{{ $report->expense }}</td>
                     <td>
-                        <a href="{{ url('report/detail?id='.$report->id) }}" class="btn btn-sm btn-primary">View Detail</a>
+                        <a href="{{ url('report/detail?id='.$report->id) }}" class="btn btn-sm btn-danger">View Detail</a>
                     </td>
                 </tr>
+                <?php
+                    $income += $report->income;
+                    $expense += $report->expense;
+                ?>
             @endforeach
+        </tbody>
+        <tfoot>
+            <td colspan="3"><div class="pull-right">Total</div></td>
+            <td>{{ $income }}</td>
+            <td>{{ $expense }}</td>
+            <td></td>
+        </tfoot>
     </table>
     <p>
         Total Data : {{ $total }}

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-lg-8">
-        <div class="panel panel-default">
+        <div class="panel panel-danger">
             <div class="panel-heading">
                 Update User
             </div>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="col-sm-offset-3 col-sm-2">
-                        {{ Form::submit('Save',['class'=>'btn btn-primary btn-block','id'=>'btnSave']) }}
+                        {{ Form::submit('Save',['class'=>'btn btn-danger btn-block','id'=>'btnSave']) }}
                     </div>
                     <div class="col-sm-2">
                         <a href="{{ url('user') }}" class="btn btn-info btn-block">Cancel</a>

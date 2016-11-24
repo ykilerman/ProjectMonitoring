@@ -11,7 +11,7 @@ foreach($users as $data)
 ?>
 <div class="row">
     <div class="col-lg-8">
-        <div class="panel panel-default">
+        <div class="panel panel-danger">
             <div class="panel-heading">
                 Edit Project
             </div>
@@ -29,6 +29,12 @@ foreach($users as $data)
                         {{ Form::label('name','Project Name',['class'=>'col-sm-3 control-label']) }}
                         <div class="col-sm-9">
                             {{ Form::text('name',$project->name,['class'=>'form-control','placeholder'=>'Insert Project Name ...','required']) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('type','Project Type',['class'=>'col-sm-3 control-label']) }}
+                        <div class="col-sm-9">
+                            {{ Form::select('type',['Consultation' => 'Consultation', 'Procurement' => 'Procurement', 'Consultation and Procurement' => 'Consultation and Procurement'],$project->type,['class'=>'form-control','required']) }}
                         </div>
                     </div>
                     <div class="form-group">
@@ -68,10 +74,10 @@ foreach($users as $data)
                         </div>
                     </div>
                     <div class="col-sm-offset-3 col-sm-2">
-                        {{ Form::submit('Save',['class'=>'btn btn-primary btn-block','id'=>'btnSave']) }}
+                        {{ Form::submit('Save',['class'=>'btn btn-danger btn-block','id'=>'btnSave']) }}
                     </div>
                     <div class="col-sm-2">
-                        <button id="btnBack" class="btn btn-info btn-block">Back</a>
+                        <button id="btnBack" class="btn btn-info btn-block" onclick="javascript:history.back()">Back</a>
                     </div>
                 {{ Form::close() }}
             </div>
@@ -82,9 +88,6 @@ foreach($users as $data)
     $(document).ready(function(){
         $("#error").click(function(){
             $(this).hide('slow');
-        });
-        $("#btnBack").click(function(){
-            history.back();
         });
     });
 </script>

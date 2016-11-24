@@ -4,9 +4,6 @@
 
 <h2>
     Project List
-    <div class="pull-right">
-        <a href="{{ url('project/create') }}" class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> New</a>
-    </div>
 </h2>
 <hr>
 <div class="row">

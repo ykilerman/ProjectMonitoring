@@ -4,18 +4,24 @@
 
 <div class="row">
     <div class="col-lg-8">
-        <div class="panel panel-default">
+        <div class="panel panel-danger">
             <div class="panel-heading">
                 Edit Report for <b>{{ $report->project->name }}</b>
             </div>
             <div class="panel-body">
                 {{ Form::open(['url'=>url('report/edit'),'method'=>'POST','id'=>'frmReport','class'=>'form-horizontal','files'=>'true']) }}
+                    {{ Form::hidden('project_id',$report->project->id) }}
                     {{ Form::hidden('id',$report->id) }}
                     @if(count($errors)>0)
                         <div id="error" class="alert alert-danger">
                             @foreach($errors->all() as $error)
                                 <p>{{ $error }}</p>
                             @endforeach
+                        </div>
+                    @endif
+                    @if(Session::has('message'))
+                        <div id="error" class="alert alert-danger">
+                            <p>{{ Session::get('message') }}</p>
                         </div>
                     @endif
                     <div class="form-group">
@@ -61,10 +67,10 @@
                         </div>
                     </div>
                     <div class="col-sm-offset-3 col-sm-2">
-                        {{ Form::submit('Save',['class'=>'btn btn-primary btn-block','id'=>'btnSave']) }}
+                        {{ Form::submit('Save',['class'=>'btn btn-danger btn-block','id'=>'btnSave']) }}
                     </div>
                     <div class="col-sm-2">
-                        <button onclick="javascript:history.back()" class="btn btn-primary btn-block">Back</button>
+                        <button onclick="javascript:history.back()" class="btn btn-info btn-block">Back</button>
                     </div>
                 {{ Form::close() }}
             </div>

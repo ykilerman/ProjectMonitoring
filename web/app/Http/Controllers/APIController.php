@@ -195,4 +195,171 @@ class APIController extends Controller
             return "sukses";
         else return "gagl";
     }
+    public function postAddproject()
+    {
+        if(Input::has('image'))
+        {
+            $now = new \DateTime();
+            $now->createFromFormat('U.u',microtime(true));
+            $name = $now->format('YmdHisu');
+            
+            $path = "Image/$name.jpg";
+            $image = Input::get('image');
+            $type = Input::get('type');
+            $title = Input::get('title');
+            $desc = Input::get('description');
+            $client_name = Input::get('client_name');
+            $value = Input::get('value');
+            $update_schedule = Input::get('update_schedule');
+            $userid = Input::get('userid');
+            
+            $data = new Project;
+            $data->name = $title;
+            $data->description = $desc;
+            $data->client_name = $client_name;
+            $data->value = $value;
+            $data->update_schedule = $update_schedule;
+            $data->user_id = $userid;
+            $data->icon_path = 'images/icon/project'.$name.'.jpg';
+            $data->type = $type;
+
+            if($data->save())
+            {
+                $data->icon_path = $_SERVER['SERVER_NAME'] . '/pm/storage/app/images/icon/project' . $data->id . '-' . $name . '.jpg';
+                $data->save();
+                
+                Storage::put(
+                    $data->icon_path,
+                    base64_decode($image)
+                );
+                return "Success";
+            }
+            else
+            {
+                return "Failed";
+            }
+        }
+        else
+        {
+            return "no image selected";
+        }
+    }
+    public function postSelectproject()
+    {
+        sleep(2);
+        $position = Input::get('position');
+        $status = Input::get('status');
+        $uid = Input::get('uid');
+        $offset = Input::get('offset');
+
+        switch ($position) 
+        {
+            case 'Project Coordinator':
+                $query = Project::where([
+                    ['user_id','=',$uid],
+                    ['status','=',$status],
+                                       ])
+                                    ->orderBy('id','DESC')
+                                    ->offset($offset)
+                                    ->limit(10)
+                                    ->get();
+                break;
+            default:
+                $query = Project::where('status','=',$status)
+                                    ->orderBy('id','DESC')
+                                    ->offset($offset)
+                                    ->limit(10)
+                                    ->get();
+                break;
+        }
+        $count = count($query);
+        
+        $json_kosong = 0;
+        
+        if($count==0)
+        {
+            $json_kosong = 1;
+        }
+        else
+        {
+
+            $num = $offset;
+            $json = '[';
+
+            foreach($query as $row)
+            {
+                $num++;
+                $tgl = date("d M Y", strtotime($row->created_at));
+                $string = substr(strip_tags($row->description), 0, 200);
+                $json .= '{
+                "no": '.$num.',
+                "id": "'.$row->id.'", 
+                "judul": "'.$row->name.'",
+                "tgl": "'.$tgl.'", 
+                "isi": "'.$string." ...".'",
+                "gambar": "'.$row->icon_path.'"},';
+            }
+        }
+        
+        $json = substr($json,0,strlen($json)-1);
+
+        if($json_kosong==1)
+        {
+            $json = '[{ "no": "", "id": "", "judul": "", "tgl": "", "isi": "", "gambar": ""}]';
+        }
+        else
+        {
+            $json .= ']';
+        }
+        return $json;
+    }
+    public function postSelectprojectreport()
+    {
+        sleep(2);
+        $offset = Input::get('offset');
+
+        $query = Project::orderBy('id','DESC')
+                            ->offset($offset)
+                            ->limit(10)
+                            ->get();
+
+        $count = count($query);
+        $json_kosong = 0;
+
+        if($count==0)
+        {
+            $json_kosong = 1;
+        }
+        else
+        {
+            $num = $offset;
+            $json = '[';
+
+            foreach($query as $row)
+            {
+                $num++;
+                $tgl = date("d M Y", strtotime($row->created_at));
+                $string = substr(strip_tags($row->description), 0, 200);
+                $json .= '{
+                "no": '.$num.',
+                "id": "'.$row->id.'", 
+                "judul": "'.$row->name.'",
+                "tgl": "'.$tgl.'", 
+                "isi": "'.$string." ...".'",
+                "gambar": "'.$row->icon_path.'"},';
+            }
+        }
+        
+        $json = substr($json,0,strlen($json)-1);
+        
+        if($json_kosong==1)
+        {
+            $json = '[{ "no": "", "id": "", "judul": "", "tgl": "", "isi": "", "gambar": ""}]';
+        }
+        else
+        {
+            $json .= ']';
+        }
+        return $json;
+    }
 }

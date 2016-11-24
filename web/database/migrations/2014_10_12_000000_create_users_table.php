@@ -17,7 +17,8 @@ class CreateUsersTable extends Migration
             $table->string('username',50)->unique();
             $table->string('password');
             $table->string('name');
-            $table->string('position',30);
+            $table->enum('position',['Project Admin','Project Coordinator','Stakeholder','Management']);
+            $table->string('id_device',400)->nullable();
             $table->rememberToken();
         });
     }

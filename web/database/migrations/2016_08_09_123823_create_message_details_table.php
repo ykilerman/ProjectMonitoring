@@ -15,7 +15,9 @@ class CreateMessageDetailsTable extends Migration
         Schema::create('message_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('message_id')->unsigned();
+            $table->string('room',30);
             $table->integer('user_id')->unsigned(); //receiver's user_id
+            $table->tinyInt('asread');
 
             $table->foreign('message_id')->references('id')->on('messages');
             $table->foreign('user_id')->references('id')->on('users');

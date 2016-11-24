@@ -2,8 +2,10 @@
 <style>
     footer div {
         margin-top: 5px;
-        background-color: rgba(0,0,0,0.2);
-        padding: 5px;
+        background: rgba(40,40,40,1);
+        padding: 10px;
+        letter-spacing: 2px;
+        color: rgba(255, 255, 255, 1);
     }
 </style>
 <div class="container-fluid text-center">

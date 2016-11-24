@@ -12,7 +12,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'user_id', 'description', 'icon_path', 'client_name', 'value', 'update_schedule', 'last_notification', 'status',
+        'name', 'user_id', 'description', 'icon_path', 'client_name', 'value', 'update_schedule', 'last_notification', 'status', 'percent', 'type',
     ];
 
     public function report()
@@ -22,6 +22,10 @@ class Project extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+    public function question()
+    {
+        return $this->hasMany('App\Question');
     }
     public function updatingStatus()
     {

@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->integer('project_id')->unsigned();
             $table->string('highlight');
             $table->longText('activity');
-            $table->string('activity_path')->nullable();
+            $table->string('activity_path');
             $table->integer('income')->nullable();
             $table->string('income_path')->nullable();
             $table->integer('expense')->nullable();
