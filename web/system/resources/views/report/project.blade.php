@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-lg-2">
-        <img class="img-responsive" src="{{ $project->icon_path }}" />
+        <img class="img-responsive" src="http://localhost/ProjectMonitoring/web/system/storage/app/public/images/icon/{{ $project->icon_path }}" />
     </div>
     <div class="col-lg-10">
         <h2>{{ $project->name }}</h2>

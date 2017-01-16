@@ -21,47 +21,6 @@ use Storage;
 
 class APIController extends Controller
 {
-    public function getLogin()
-    {
-        $username = Input::get('username');
-        $password = Input::get('password');
-        $deviceid = Input::get('deviceid');
-        $data = [];
-        
-        $users = User::where([
-            ['username',$username],
-            ['password',$password],
-        ])->get();
-        
-        $found = count($users);
-        if($found > 0)
-        {
-            foreach($users as $user)
-            {
-                $uid = $user->id;
-                $username = $user->username;
-                $password = $user->password;
-                $name = $user->name;
-                $position = $user->position;
-                $data[] = [
-                    'uid' => $uid,
-                    'username' => $username,
-                    'password' => $password,
-                    'name' => $name,
-                    'position' => $position,
-                ];
-                Device::create([
-                    'device_id'=>$deviceid,
-                    'user_id'=>$uid,
-                ]);
-            }
-        }
-        else
-        {
-            $data[] = ['uid' =>"" ,'username' =>"" , 'name'=>"errorpass",'position'=>""];
-        }
-        return json_encode($data);
-    }
     public function postLogin()
     {
         $username = Input::get('username');
@@ -69,9 +28,23 @@ class APIController extends Controller
         $deviceid = Input::get('deviceid');
         $data = [];
         
+        if(!Input::has('username'))
+        {
+            $data[] = ['uid' =>"" ,'username' =>"" , 'name'=>"nouser",'position'=>""];
+            return json_encode($data);
+        }
+        if(!Input::has('password'))
+        {
+            $data[] = ['uid' =>"" ,'username' =>"" , 'name'=>"nopass",'position'=>""];
+            return json_encode($data);
+        }
+        if(!Input::has('deviceid'))
+        {
+            $data[] = ['uid' =>"" ,'username' =>"" , 'name'=>"nodevice",'position'=>""];
+            return json_encode($data);
+        }
         $users = User::where([
             ['username',$username],
-            ['password',$password],
         ])->get();
         
         $found = count($users);
@@ -79,47 +52,38 @@ class APIController extends Controller
         {
             foreach($users as $user)
             {
-                $uid = $user->id;
-                $username = $user->username;
-                $password = $user->password;
-                $name = $user->name;
-                $position = $user->position;
-                $data[] = [
-                    'uid' => $uid,
-                    'username' => $username,
-                    'password' => $password,
-                    'name' => $name,
-                    'position' => $position,
-                ];
-                Device::create([
-                    'device_id'=>$deviceid,
-                    'user_id'=>$uid,
-                ]);
+                if(Hash::check($password,$user->password))
+                {
+                    $uid = $user->id;
+                    $username = $user->username;
+                    $password = $password;
+                    $name = $user->name;
+                    $position = $user->position;
+                    $data[] = [
+                        'uid' => $uid,
+                        'username' => $username,
+                        'password' => $password,
+                        'name' => $name,
+                        'position' => $position,
+                    ];
+                    Device::create([
+                        'device_id'=>$deviceid,
+                        'user_id'=>$uid,
+                    ]);
+                }
+                else
+                {
+                    $data[] = ['uid' =>"" ,'username' =>"" , 'name'=>"errorpass",'position'=>""];
+                }
             }
         }
         else
         {
-            $data[] = ['uid' =>"" ,'username' =>"" , 'name'=>"errorpass",'position'=>""];
+            $data[] = ['uid' =>"" ,'username' =>"" , 'name'=>"erroruser",'position'=>""];
         }
         return json_encode($data);
     }
     public function postCreateuser()
-    {
-        $user = User::create([
-            'username' => Input::get('username'),
-            'password' => bcrypt(Input::get('password')),
-            'name' => Input::get('name'),
-            'position' => Input::get('position'),
-        ]);
-        $data = [
-            'uid' => $user->id,
-            'username' => $user->username,
-            'name' => $user->username,
-            'position' => $user->position,
-        ];
-        return $data;
-    }
-    public function getCreateuser()
     {
         $user = User::create([
             'username' => Input::get('username'),
@@ -141,6 +105,7 @@ class APIController extends Controller
         $image = Input::get('image');
         $description = Input::get('description');
         $client_name = Input::get('client_name');
+        $type = Input::get('type');
         $user_id = Input::get('user_id');
         $value = Input::get('value');
         $update_schedule = Input::get('update_schedule');
@@ -149,60 +114,39 @@ class APIController extends Controller
         $now->createFromFormat('U.u',microtime(true));
         $name = $now->format('YmdHisu');
 
+//        try
+//        {
+//
+//        $data->icon_path = "http://" . $_SERVER['SERVER_NAME'] . "/ProjectMonitoring/web/system/storage/app/images/icon/project".$data->id."-".$name.".jpg";
+//        Storage::put(
+//            "images/icon/project".$data->id."-".$name.".jpg",
+//            base64_decode($image)
+//        );
+//        $data->save();
+//        return "Success";
+//        }
+//        catch(Exception $e)
+//        {
+//            return "Failed";
+//        }
+
         $data = new Project;
         $data->name = $title;
+        $data->type = $type;
         $data->description = $description;
         $data->client_name = $client_name;
         $data->value = $value;
         $data->update_schedule = $update_schedule;
         $data->user_id = $user_id;
-        $data->icon_path = 'images/evidence/'.$name.'.jpg';
-
-        if($data->save())
+        $data->icon_path = '';
+        $data->save();
+        if($data->id)
         {
+            $data->icon_path = "http://" . $_SERVER['SERVER_NAME'] . "/ProjectMonitoring/web/system/storage/app/images/icon/project".$data->id."-".$name.".jpg";
             Storage::put(
-                $data->icon_path,
+                "images/icon/project".$data->id."-".$name.".jpg",
                 base64_decode($image)
             );
-            $data->icon_path = $_SERVER['SERVER_NAME'] . "/pm/storage/app/" . $data->icon_path;
-            $data->save();
-            return "Success";
-        }
-        else
-        {
-            return "Failed";
-        }
-    }
-    public function getCreateproject()
-    {
-        $title = Input::get('title');
-        $image = Input::get('image');
-        $description = Input::get('description');
-        $client_name = Input::get('client_name');
-        $user_id = Input::get('user_id');
-        $value = Input::get('value');
-        $update_schedule = Input::get('update_schedule');
-
-        $now = new \DateTime();
-        $now->createFromFormat('U.u',microtime(true));
-        $name = $now->format('YmdHisu');
-
-        $data = new Project;
-        $data->name = $title;
-        $data->description = $description;
-        $data->client_name = $client_name;
-        $data->value = $value;
-        $data->update_schedule = $update_schedule;
-        $data->user_id = $user_id;
-        $data->icon_path = 'images/evidence/'.$name.'.jpg';
-
-        if($data->save())
-        {
-            Storage::put(
-                $data->icon_path,
-                base64_decode($image)
-            );
-            $data->icon_path = $_SERVER['SERVER_NAME'] . "/pm/storage/app/" . $data->icon_path;
             $data->save();
             return "Success";
         }
@@ -260,60 +204,11 @@ class APIController extends Controller
 
             if($data->save())
             {
-                $data->icon_path = $_SERVER['SERVER_NAME'] . '/pm/storage/app/images/icon/project' . $data->id . '-' . $name . '.jpg';
+                $data->icon_path = 'http://localhost/ProjectMonitoring/web/system/storage/app/images/icon/project' . $data->id . '-' . $name . '.jpg';
                 $data->save();
                 
                 Storage::put(
-                    $data->icon_path,
-                    base64_decode($image)
-                );
-                return "Success";
-            }
-            else
-            {
-                return "Failed";
-            }
-        }
-        else
-        {
-            return "no image selected";
-        }
-    }
-    public function getAddproject()
-    {
-        if(Input::has('image'))
-        {
-            $now = new \DateTime();
-            $now->createFromFormat('U.u',microtime(true));
-            $name = $now->format('YmdHisu');
-            
-            $path = "Image/$name.jpg";
-            $image = Input::get('image');
-            $type = Input::get('type');
-            $title = Input::get('title');
-            $desc = Input::get('description');
-            $client_name = Input::get('client_name');
-            $value = Input::get('value');
-            $update_schedule = Input::get('update_schedule');
-            $userid = Input::get('userid');
-            
-            $data = new Project;
-            $data->name = $title;
-            $data->description = $desc;
-            $data->client_name = $client_name;
-            $data->value = $value;
-            $data->update_schedule = $update_schedule;
-            $data->user_id = $userid;
-            $data->icon_path = 'images/icon/project'.$name.'.jpg';
-            $data->type = $type;
-
-            if($data->save())
-            {
-                $data->icon_path = $_SERVER['SERVER_NAME'] . '/pm/storage/app/images/icon/project' . $data->id . '-' . $name . '.jpg';
-                $data->save();
-                
-                Storage::put(
-                    $data->icon_path,
+                    'images/icon/project' . $data->id . '-' . $name . '.jpg',
                     base64_decode($image)
                 );
                 return "Success";
@@ -339,21 +234,25 @@ class APIController extends Controller
         switch ($position) 
         {
             case 'Project Coordinator':
-                $query = Project::where([
-                    ['user_id','=',$uid],
-                    ['status','=',$status],
-                                       ])
-                                    ->orderBy('id','DESC')
-                                    ->offset($offset)
-                                    ->limit(10)
-                                    ->get();
+                $query = DB::table('projects')
+                    ->select(DB::raw('id, created_at, icon_path, name, description, name, datediff(ADDDATE(last_notification,update_schedule), current_date()) as "update"'))
+                    ->where([
+                        ['user_id','=',$uid],
+                        ['status','=',$status],
+                    ])
+                    ->orderBy('id','DESC')
+                    ->offset($offset)
+                    ->limit(10)
+                    ->get();
                 break;
             default:
-                $query = Project::where('status','=',$status)
-                                    ->orderBy('id','DESC')
-                                    ->offset($offset)
-                                    ->limit(10)
-                                    ->get();
+                $query = DB::table('projects')
+                    ->select(DB::raw('id, created_at, icon_path, name, description, name, datediff(ADDDATE(last_notification,update_schedule), current_date()) as "update"'))
+                    ->where('status','=',$status)
+                    ->orderBy('id','DESC')
+                    ->offset($offset)
+                    ->limit(10)
+                    ->get();
                 break;
         }
         $count = count($query);
@@ -368,104 +267,147 @@ class APIController extends Controller
         {
 
             $num = $offset;
-            $json = '[';
+//            $json = '[';
 
+            $data = [];
             foreach($query as $row)
             {
                 $num++;
                 $tgl = date("d M Y", strtotime($row->created_at));
                 $string = substr(strip_tags($row->description), 0, 200);
-                $json .= '{
-                "no": '.$num.',
-                "id": "'.$row->id.'", 
-                "judul": "'.$row->name.'",
-                "tgl": "'.$tgl.'", 
-                "isi": "'.$string." ...".'",
-                "gambar": "'.$row->icon_path.'"},';
-            }
-        }
-        
-        $json = substr($json,0,strlen($json)-1);
 
+                array_push($data,[
+                    'no' => $num,
+                    'id' => $row->id,
+                    'judul' => $row->name,
+                    'tgl' => $tgl,
+                    'isi' => $string.' ...',
+                    'update' => $row->update,
+                    'gambar' => $row->icon_path,
+                ]);
+
+//                $json .= '{
+//                "no": '.$num.',
+//                "id": "'.$row->id.'",
+//                "judul": "'.$row->name.'",
+//                "tgl": "'.$tgl.'",
+//                "isi": "'.$string." ...".'",
+//                "gambar": "'.$row->icon_path.'"},';
+//                $json .= ']';
+            }
+            usort($data, function($a,$b){
+                return $a['update'] - $b['update'];
+            });
+
+//            $json = substr($json,0,strlen($json)-1);
+        }
         if($json_kosong==1)
         {
             $json = '[{ "no": "", "id": "", "judul": "", "tgl": "", "isi": "", "gambar": ""}]';
+            return $json;
         }
         else
         {
-            $json .= ']';
+            return json_encode($data);
         }
-        return $json;
     }
-    public function getSelectproject()
-    {
-        sleep(2);
-        $position = Input::get('position');
-        $status = Input::get('status');
-        $uid = Input::get('uid');
-        $offset = Input::get('offset');
-
-        switch ($position) 
-        {
-            case 'Project Coordinator':
-                $query = Project::where([
-                    ['user_id','=',$uid],
-                    ['status','=',$status],
-                                       ])
-                                    ->orderBy('id','DESC')
-                                    ->offset($offset)
-                                    ->limit(10)
-                                    ->get();
-                break;
-            default:
-                $query = Project::where('status','=',$status)
-                                    ->orderBy('id','DESC')
-                                    ->offset($offset)
-                                    ->limit(10)
-                                    ->get();
-                break;
-        }
-        $count = count($query);
-        
-        $json_kosong = 0;
-        
-        if($count==0)
-        {
-            $json_kosong = 1;
-        }
-        else
-        {
-
-            $num = $offset;
-            $json = '[';
-
-            foreach($query as $row)
-            {
-                $num++;
-                $tgl = date("d M Y", strtotime($row->created_at));
-                $string = substr(strip_tags($row->description), 0, 200);
-                $json .= '{
-                "no": '.$num.',
-                "id": "'.$row->id.'", 
-                "judul": "'.$row->name.'",
-                "tgl": "'.$tgl.'", 
-                "isi": "'.$string." ...".'",
-                "gambar": "'.$row->icon_path.'"},';
-            }
-        }
-        
-        $json = substr($json,0,strlen($json)-1);
-
-        if($json_kosong==1)
-        {
-            $json = '[{ "no": "", "id": "", "judul": "", "tgl": "", "isi": "", "gambar": ""}]';
-        }
-        else
-        {
-            $json .= ']';
-        }
-        return $json;
-    }
+//    public function postSelectproject()
+//    {
+//        sleep(2);
+//        $position = Input::get('position');
+//        $status = Input::get('status');
+//        $uid = Input::get('uid');
+//        $offset = Input::get('offset');
+//
+//        switch ($position)
+//        {
+//            case 'Project Coordinator':
+//                $query = Project::where([
+//                    ['user_id','=',$uid],
+//                    ['status','=',$status],
+//                                       ])
+//                                    ->orderBy('id','DESC')
+//                                    ->offset($offset)
+//                                    ->limit(10)
+//                                    ->get();
+//                break;
+//            default:
+//                $query = Project::where('status','=',$status)
+//                                    ->orderBy('id','DESC')
+//                                    ->offset($offset)
+//                                    ->limit(10)
+//                                    ->get();
+//                break;
+//        }
+//        $count = count($query);
+//
+//        $json_kosong = 0;
+//
+//        if($count==0)
+//        {
+//            $json_kosong = 1;
+//        }
+//        else
+//        {
+//
+//            $num = $offset;
+////            $json = '[';
+//
+//            $data = [];
+//            foreach($query as $row)
+//            {
+//                $num++;
+//                $tgl = date("d M Y", strtotime($row->created_at));
+//                $string = substr(strip_tags($row->description), 0, 200);
+//                $now = new \DateTime();
+//                $now->createFromFormat('Y-m-d',microtime(false));
+//                $date_add = date_add(
+//                        date_create($row->last_notification),
+//                        date_interval_create_from_date_string($row->update_schedule.' days'))->format('Y-m-d');
+//                $diff = date_diff(
+//                    $now,
+//                    new \DateTime($date_add)
+//                    );
+//
+//                array_push($data,[
+//                    'no' => $num,
+//                    'id' => $row->id,
+//                    'judul' => $row->name,
+//                    'tgl' => $tgl,
+//                    'isi' => $string.' ...',
+//                    'update' => $diff->format('%r%a'),
+//                    'gambar' => $row->icon_path,
+//                    'now' => $now,
+//                    'date_add' => date_add(
+//                        date_create($row->last_notification),
+//                        date_interval_create_from_date_string($row->update_schedule.' days'))->format('Y-m-d'),
+//                ]);
+//
+////                $json .= '{
+////                "no": '.$num.',
+////                "id": "'.$row->id.'",
+////                "judul": "'.$row->name.'",
+////                "tgl": "'.$tgl.'",
+////                "isi": "'.$string." ...".'",
+////                "gambar": "'.$row->icon_path.'"},';
+////                $json .= ']';
+//            }
+//            usort($data, function($a,$b){
+//                return $a['update'] - $b['update'];
+//            });
+//
+////            $json = substr($json,0,strlen($json)-1);
+//        }
+//        if($json_kosong==1)
+//        {
+//            $json = '[{ "no": "", "id": "", "judul": "", "tgl": "", "isi": "", "gambar": ""}]';
+//            return $json;
+//        }
+//        else
+//        {
+//            return json_encode($data);
+//        }
+//    }
     public function postSelectprojectreport()
     {
         sleep(2);
@@ -544,14 +486,14 @@ class APIController extends Controller
     }
     public function postSelectcoordinator()
     {
-        if(Input::has('username'))
-        {
+//        if(Input::has('username'))
+//        {
             $username = Input::get('username');
             $password = Input::get('password');
 
             $data = [];
 
-            $users = Users::where('position','Project Coordinator')
+            $users = User::where('position','Project Coordinator')
                 ->get();
 
             $found = count($users);
@@ -571,38 +513,12 @@ class APIController extends Controller
                 $data[] = ['name' => ''];
                 return json_encode($data);
             }
-        }
-    }
-    public function getSelectcoordinator()
-    {
-        if(Input::has('username'))
-        {
-            $username = Input::get('username');
-            $password = Input::get('password');
-
-            $data = [];
-
-            $users = Users::where('position','Project Coordinator')
-                ->get();
-
-            $found = count($users);
-            if($found > 0)
-            {
-                foreach($users as $user)
-                {
-                    $uid = $user->id;
-                    $name = $user->name;
-                    $data[] = ['uid' => $uid, 'name' => $name];
-                }
-                $dataCoordinator['coordinator'] = $data;
-                return json_encode($dataCoordinator);
-            }
-            else
-            {
-                $data[] = ['name' => ''];
-                return json_encode($data);
-            }
-        }
+//        }
+//        else
+//        {
+//            $data[] = ['name' => 'nouser'];
+//            return json_encode($data);
+//        }
     }
     public function postChangepassword()
     {
@@ -625,7 +541,7 @@ class APIController extends Controller
         sleep(2);
 
         $offset = Input::get('offset');
-        $query = Users::orderBy('name','asc')->offset($offset)->limit(10)->get();
+        $query = User::orderBy('name','asc')->offset($offset)->limit(10)->get();
         $count = count($query);
         $json_kosong = 0;
         
@@ -688,12 +604,12 @@ class APIController extends Controller
                     "no": "'.$num.'",
                     "id": "'.$report->id.'",
                     "hightlight": "'.$report->highlight.'",
-                    "activity": "'.$user->activity.'",
-                    "activity_path": "'.$user->activity_path.'",
-                    "income": "'.$user->income.'",
-                    "income_path": "'.$user->income_path.'",
-                    "expense": "'.$user->expense.'",
-                    "expense_path": "'.$user->expense_path.'"
+                    "activity": "'.$report->activity.'",
+                    "activity_path": "'.$report->activity_path.'",
+                    "income": "'.$report->income.'",
+                    "income_path": "'.$report->income_path.'",
+                    "expense": "'.$report->expense.'",
+                    "expense_path": "'.$report->expense_path.'"
                 },';
             }
         }
@@ -709,7 +625,7 @@ class APIController extends Controller
         }
         return $json;
     }
-    public function postUpdateProject()
+    public function postUpdateproject()
     {
         $now = new \DateTime();
         $now->createFromFormat('U.u',microtime(true));
@@ -729,7 +645,7 @@ class APIController extends Controller
             $data = new Report;
             $data->project_id = $id;
             $data->highlight = $highlight;
-            $data->activity = activity;
+            $data->activity = $activity;
             $data->activity_path = "";
             $data->income = $income;
             $data->income_path = "";
@@ -743,7 +659,7 @@ class APIController extends Controller
                     $activity_path,
                     base64_decode($imageActivity)
                 );
-                $data->activity_path = $_SERVER['SERVER_NAME'] . "/pm/storage/app/" . $data->activity_path;
+                $data->activity_path = "http://localhost/ProjectMonitoring/web/system/storage/app/" . $activity_path;
                 $data->save();
                 //income
                 $income_path = "images/evidence/income".$data->id."-".$name.".jpg";
@@ -751,7 +667,7 @@ class APIController extends Controller
                     $income_path,
                     base64_decode($imageIncome)
                 );
-                $data->income_path = $_SERVER['SERVER_NAME'] . "/pm/storage/app/" . $data->income_path;
+                $data->income_path = "http://localhost/ProjectMonitoring/web/system/storage/app/" . $income_path;
                 $data->save();
                 //expense
                 $expense_path = "images/evidence/expense".$data->id."-".$name.".jpg";
@@ -759,7 +675,7 @@ class APIController extends Controller
                     $expense_path,
                     base64_decode($imageExpense)
                 );
-                $data->expense_path = $_SERVER['SERVER_NAME'] . "/pm/storage/app/" . $data->expense_path;
+                $data->expense_path = "http://localhost/ProjectMonitoring/web/system/storage/app/" . $expense_path;
                 $data->save();
                 
                 return "Success";
@@ -807,9 +723,11 @@ class APIController extends Controller
             if($data->save())
             {
                 Storage::put(
-                    $activity_path,
-                    base64_decode($imageActivity)
+                    $icon_path,
+                    base64_decode($image)
                 );
+                $data->icon_path = "http://localhost/ProjectMonitoring/web/system/storage/app/" . $icon_path;
+                $data->save();
                 return "Success";
             }
             else
@@ -829,7 +747,7 @@ class APIController extends Controller
     public function postDetailproject()
     {
         $id = Input::get('id');
-        $datas = Project::find($id);
+        $data = Project::find($id);
         
         $char = '"';
         $tgl = date("d M Y", strtotime($data->created_at));
@@ -1006,8 +924,9 @@ class APIController extends Controller
         ]);
         if($message)
         {
+            $idMessage = $message->id;
             $detailMessage = MessageDetail::create([
-                'message_id'=>$message->id, 
+                'message_id'=>$idMessage,
                 'room'=>$room, 
                 'user_id'=>$receiver, 
             ]);
@@ -1028,7 +947,7 @@ class APIController extends Controller
             $message = "Gagal insert ketabel messages";
         }
         $data[] = ['status'=>$status,'message'=>$message,];
-        return json_encode($data) . $idMessage;
+        return json_encode($data);
     }
     public function postSelectmessage()
     {
@@ -1040,7 +959,7 @@ class APIController extends Controller
             ->where('messages.user_id',$user)
             ->orWhere('message_details.user_id',$user)
             ->select('messages.id as messages_id','messages.user_id as messages_user_id','messages.room as messages_room','messages.subject as messages_subject','messages.message as messages_message','messages.created_at as messages_created_at','messages.updated_at as messages_updated_at','message_details.user_id as mdu_id')
-            ->groupBy('room')
+            ->groupBy('messages.room')
             ->orderBy('updated_at','DESC')
             ->get();
         $num = 0;
@@ -1056,7 +975,7 @@ class APIController extends Controller
                 $pesan = $message->messages_message;
                 $created_at = $message->messages_created_at;
                 $updated_at = $message->messages_updated_at;
-                if($message->user_id == $user)
+                if($idSender == $user)
                 {
                     $idSender = $message->mdu_id;
                 }
@@ -1099,16 +1018,16 @@ class APIController extends Controller
             ->where('messages.room','=',$room)
             ->where('messages.user_id','=',$userid)
             ->orWhere('message_details.user_id','=',$userid)
-            ->select('messages.id as messages_id','users.name as users_name','messages.room as messages_room','messages.message as messages_message','messages.created_at as messages_created_at')
+            ->select('messages.id as messages_id','users.name as users_name','messages.room as messages_room','messages.message as messages_message','messages.created_at as m_created_at')
             ->groupBy('messages.id')
-            ->orderBy('created_at','asc')
+            ->orderBy('messages.created_at','asc')
             ->get();
         if(isset($unread))
         {
             MessageDetail::where('room',$room)
                 ->where('user_id',$userid)
                 ->update([
-                    'asread','=','1',
+                    'asread'=>'1',
                 ]);
         }
         if($messages)
@@ -1118,15 +1037,15 @@ class APIController extends Controller
                 $idmessage = $message->messages_id;
                 $sender = $message->users_name;
                 $room = $message->messages_room;
-                $message = $message->messages_message;
-                $created_at = $message->created_at;
+                $m = $message->messages_message;
+                $created_at = $message->m_created_at;
                 
                 $data[] = [
                     'idmessage'=> $idmessage,
                     'sender'=> $sender,
                     'room'=> $room,
-                    'message'=> $message,
-                    'created_at'=> $create_at,
+                    'message'=> $m,
+                    'created_at'=> $created_at,
                 ];
             }
         }
@@ -1151,7 +1070,7 @@ class APIController extends Controller
             'user_id'=>$sender,
             'room'=>$room,
             'subject'=>$subject,
-            'message'=>message,
+            'message'=>$message,
         ]);
         
         if($newdata)
@@ -1169,7 +1088,7 @@ class APIController extends Controller
                         'updated_at'=>$now,
                     ]);
                 $status = ($update) ? "success" : "error";
-                $message = ($update) ? "error" : "Gagal Update";
+                $message = ($update) ? "Your message has been sent, click ok to see your message" : "Gagal Update";
             }
             else
             {

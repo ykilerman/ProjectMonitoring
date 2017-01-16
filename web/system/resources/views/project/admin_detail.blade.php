@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-lg-3">
         <figure >
-            <img class="img-responsive" src="{{ $project->icon_path }}">
+            <img class="img-responsive" src="http://localhost/ProjectMonitoring/web/system/storage/app/public/images/icon/{{ $project->icon_path }}">
         </figure>
     </div>
     <div class="col-lg-9">

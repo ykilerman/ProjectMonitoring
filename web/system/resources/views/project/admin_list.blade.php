@@ -46,7 +46,7 @@
                 @if((Auth::user()->position == 'Project Coordinator' && $project->user_id == Auth::user()->id) || Auth::user()->position != 'Project Coordinator')
                     <tr onclick="javascript:window.location.href='{{ url('project/detail?id='.$project->id) }}'">
                         <td>{{ $i++ }}</td>
-                        <td><img src='{{ $project->icon_path }}' width='90px' height="90px" class="img-responsive" alt="" /></td>
+                        <td><img src='http://localhost/ProjectMonitoring/web/system/storage/app/public/images/icon/{{ $project->icon_path }}' width='90px' height="90px" class="img-responsive" alt="" /></td>
                         <td class="text-left">{{ $project->name }}</td>
                         <td>{{ $project->created_at }}</td>
                         <td>{{ $project->percent }} %</td>

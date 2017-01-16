@@ -1,3 +1,4 @@
+@if(Auth::user())
 {{-- header web --}}
 <style>
     a.header {
@@ -140,3 +141,4 @@
 <script>
     ajaxLoad("{{ url('menu/notif') }}","notif");
 </script>
+@endif

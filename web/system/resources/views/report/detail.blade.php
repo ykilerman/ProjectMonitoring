@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-lg-3">
         <figure>
-            <img class="img-responsive" src="{{ $report->project->icon_path }}">
+            <img class="img-responsive" src="http://localhost/ProjectMonitoring/web/system/storage/app/public/images/icon/{{ $report->project->icon_path }}">
         </figure>
     </div>
     <div class="col-lg-9">
@@ -34,7 +34,7 @@
         <p><?= $report->activity ?></p>
         <h4>Evidence:</h4>
         <figure>
-            <img src="{{ $report->activity_path }}" class="img-responsive">
+            <img src="http://localhost/ProjectMonitoring/web/system/storage/app/public/images/evidence/{{ $report->activity_path }}" class="img-responsive">
         </figure>
     </div>
     <div class="col-lg-4">
@@ -42,7 +42,7 @@
         <p><?= $report->income ?></p>
         <h4>Evidence:</h4>
         <figure>
-            <img src="{{ $report->income_path }}" class="img-responsive">
+            <img src="http://localhost/ProjectMonitoring/web/system/storage/app/public/images/evidence/{{ $report->income_path }}" class="img-responsive">
         </figure>
     </div>
     <div class="col-lg-4">
@@ -50,7 +50,7 @@
         <p><?= $report->expense ?></p>
         <h4>Evidence:</h4>
         <figure>
-            <img src="{{ $report->expense_path }}" class="img-responsive">
+            <img src="http://localhost/ProjectMonitoring/web/system/storage/app/public/images/evidence/{{ $report->expense_path }}" class="img-responsive">
         </figure>
     </div>
 </div>

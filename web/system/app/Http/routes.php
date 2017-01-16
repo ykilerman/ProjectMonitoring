@@ -25,5 +25,3 @@ Route::controller('api','APIController');
 Route::controller('user','UserController');
 Route::controller('report','ReportController');
 Route::controller('message','MessageController');
-Route::controller('question','QuestionController');
-Route::controller('answer','AnswerController');

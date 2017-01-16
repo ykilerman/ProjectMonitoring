@@ -56,7 +56,7 @@ function ajaxLoad(filename, content) {
 			$('.loading').hide();
 		},
 		error: function (xhr, status, error) {
-			alert(xhr.responseText);
+			alert(error);
 		}
 	});
 }
