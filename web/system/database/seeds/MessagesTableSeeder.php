@@ -12,10 +12,6 @@ class MessagesTableSeeder extends Seeder
      */
     public function run()
     {
-        Message::create([
-            'user_id' => '1',
-            'subject' => 'Message Seeder',
-            'message' => 'This is a message table seeder.',
-        ]);
+        //
     }
 }

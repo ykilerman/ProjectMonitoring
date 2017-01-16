@@ -13,7 +13,7 @@ class CreateProjectsTable extends Migration
     public function up()
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('id',12)->primary();
             $table->integer('user_id')->unsigned();
             $table->enum('type',['Consultation','Procurement','Consultation and Procurement']);
             $table->string('name',100);

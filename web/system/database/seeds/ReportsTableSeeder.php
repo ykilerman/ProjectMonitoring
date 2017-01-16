@@ -13,7 +13,7 @@ class ReportsTableSeeder extends Seeder
     public function run()
     {
         Report::create([
-            'project_id' => '1',
+            'project_id' => 'CU0000000001',
             'highlight' => 'initiate project',
             'activity' => 'initiate project',
             'activity_path' => 'http://localhost/ProjectMonitoring/web/storage/app/images/evidence/activity1-20160824125700.jpg',

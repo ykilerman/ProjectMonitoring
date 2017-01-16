@@ -13,7 +13,7 @@ class UpdatingStatusesTableSeeder extends Seeder
     public function run()
     {
         UpdatingStatus::create([
-            'project_id' => '1',
+            'project_id' => 'PR0000000001',
             'highlight' => 'Closing Project',
             'description' => 'Project is cleared',
         ]);

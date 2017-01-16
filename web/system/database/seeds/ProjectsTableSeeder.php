@@ -13,6 +13,7 @@ class ProjectsTableSeeder extends Seeder
     public function run()
     {
         Project::create([
+            'id' => 'CU0000000001',
             'name' => 'Project 1',
             'user_id' => '2',
             'type' => 'Consultation',
@@ -23,6 +24,7 @@ class ProjectsTableSeeder extends Seeder
             'update_schedule' => '7',
         ]);
         Project::create([
+            'id' => 'CU0000000002',
             'name' => 'Project 2',
             'user_id' => '2',
             'type' => 'Consultation',
@@ -34,6 +36,7 @@ class ProjectsTableSeeder extends Seeder
             'status' => 'Deleted',
         ]);
         Project::create([
+            'id' => 'PR0000000001',
             'name' => 'Project 3',
             'user_id' => '2',
             'type' => 'Procurement',
@@ -45,6 +48,7 @@ class ProjectsTableSeeder extends Seeder
             'status' => 'Closed',
         ]);
         Project::create([
+            'id' => 'CP0000000001',
             'name' => 'Project 4',
             'user_id' => '2',
             'type' => 'Consultation and Procurement',
