@@ -11,12 +11,12 @@ $data = array();
 require_once('connection.php');
 
 
-$sql = "SELECT messages.id,users.name, messages.room, messages.message, messages.created_at FROM messages,message_details,users WHERE messages.user_id=users.id AND message_details.message_id=messages.id AND messages.room =$room AND ( messages.user_id =$userid OR message_details.user_id=$userid) GROUP BY messages.id  ORDER BY created_at ASC";
+$sql = "SELECT messages.id,users.name, messages.room, messages.message, messages.created_at FROM messages,users WHERE messages.sender_id=users.id AND messages.room =$room AND ( messages.sender_id =$userid OR messages.receiver_id=$userid) GROUP BY messages.id  ORDER BY created_at ASC";
 $res = mysqli_query($con,$sql);
 
 
  if (isset($unread)) {
-    $sqlUpdateReadMessage = mysqli_query($con,"UPDATE message_details SET asread=1 WHERE room=$room AND user_id=$userid");
+    $sqlUpdateReadMessage = mysqli_query($con,"UPDATE messages SET asread='1' WHERE room=$room AND receiver_id=$userid");
  }
 $found=mysqli_num_rows($res);
 

@@ -5,7 +5,7 @@ $deviceid = $_POST['deviceid'];
 if (isset($deviceid) and isset($userid)) {
 	# code...
 
-$sql = "DELETE FROM device WHERE device_id='$deviceid' and user_id ='$userid'";
+$sql = "DELETE FROM devices WHERE device_id='$deviceid' and user_id ='$userid'";
 
 $res = mysqli_query($con,$sql);
 if ($res) {

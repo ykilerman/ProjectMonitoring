@@ -1,9 +1,17 @@
 @extends('layouts.app')
 @section('title') Login | @endsection
 @section('content')
-
-<div class="row">
-    <div class="col-lg-4 col-lg-offset-4">
+<style>
+    .flex-center {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        height: 100vh;
+    }
+</style>
+<div class="row flex-center">
+    <div class="col-lg-4">
         <div class="panel panel-danger">
             <div class="panel-heading">
                 <i class="glyphicon glyphicon-user"></i> Login

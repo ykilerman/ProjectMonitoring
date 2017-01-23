@@ -35,13 +35,9 @@
 <hr>
 <h3>Report</h3>
 <p><a href="{{ url('report?id='.$project->id) }}" class="link">View <strong>{{ $project->name }}</strong>'s reports here</a></p>
-<hr>
-<h3>Question & Answer</h3>
-<div id="question"></div>
 
 <script>
     $(document).ready(function(){
-        ajaxLoad("{{ url('question/listnoedit?project_id='.$project->id) }}",'question');
         $("#btnBack").click(function(){
             history.back();
         });

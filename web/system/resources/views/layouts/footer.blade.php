@@ -1,4 +1,5 @@
 {{-- footer web --}}
+@if(Auth::check())
 <style>
     footer div {
         margin-top: 5px;
@@ -11,3 +12,4 @@
 <div class="container-fluid text-center">
     &copy; VDI 2016
 </div>
+@endif

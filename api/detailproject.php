@@ -9,7 +9,7 @@ require_once('connection.php');
 $data = array();
 
 
-$sql = "SELECT projects.id, projects.name, projects.client_name, projects.type, users.name as coordinator, users.id as idcoor,projects.update_schedule, projects.value, projects.created_at, description, percent,icon_path FROM projects,users WHERE projects.user_id = users.id and projects.id=$id";
+$sql = "SELECT projects.id, projects.name, projects.client_name, projects.type, users.name as coordinator, users.id as idcoor,projects.update_schedule, projects.value, projects.created_at, description, percent,icon_path FROM projects,users WHERE projects.user_id = users.id and projects.id='$id'";
 $res = mysqli_query($con,$sql);
 
 $found=mysqli_num_rows($res);

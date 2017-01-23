@@ -13,35 +13,29 @@ $now = date('Y-m-d H-i-s');
 
 $data = array();
 
-$sql = "INSERT INTO messages (user_id,room,subject,message,created_at,updated_at) VALUES ('$sender','$room','$subject','$message','$now','$now')";
+$sql = "INSERT INTO messages (sender_id,receiver_id,room,subject,message,created_at,updated_at) VALUES ('$sender','$receiver','$room','$subject','$message','$now','$now')";
 
 
 if (mysqli_query($con, $sql)) {
 	$idMessage = mysqli_insert_id($con);
 
 	if ($idMessage != null) {
-		$sqlDetail = "INSERT INTO message_details (message_id,user_id,room,asread) VALUES ('$idMessage','$receiver','$room','0')";
-		if (mysqli_query($con,$sqlDetail)) {
 			$sqlUpdateDataChat = "UPDATE messages SET updated_at='$now' WHERE room=$room";
 			$update = mysqli_query($con,$sqlUpdateDataChat);
 			if ($update) {
 				$status = "success";
-				$message ="Your message has been sent, click ok to see your message";
+				$message ="success";
 			}else{
 				$status = "error";
 				$message ="Gagal Update";
 				echo mysqli_error($con);
 			}
-		}else{
-			$status = "error";
-			$message ="gagal insert ke tabel detail ";
 
 		}
 
 			$data[] = array('status' =>$status , 'message'=>$message);
 
-	}
-} else {
+	} else {
 	$status = "error";
 	$message ="Gagal insert ketabel messages karena : " . $sql . "<br>" . mysqli_error($con);
 	$data[] = array('status' =>$status , 'message'=>$message);

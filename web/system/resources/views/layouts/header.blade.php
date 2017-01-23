@@ -91,7 +91,6 @@
             <a href="{{ url('project/deleted') }}">Deleted Project</a>
         </div>
     </li>
-    <li class="right"><a href="{{ url('notification') }}">Notification</a></li>
 </ul>
 {{--<nav class="navbar navbar-default">
     <div class="navbar-header">

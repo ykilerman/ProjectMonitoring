@@ -97,7 +97,7 @@ class ReportController extends Controller
     {
         if (Auth::user())
         {
-            Session::put('report_quarter', Input::has('quarter') ? Input::get('quarter') : (Session::has('report_quarter') ? Session::get('report_quarter') : date('m') == '01' || date('m') == '02' || date('m') == '03' ? '0' : date('m') == '04' || date('m') == '05' || date('m') == '06' ? '1' : date('m') == '07' || date('m') == '08' || date('m') == '09' ? '2' : '3'));
+            Session::put('report_quarter', Input::has('quarter') ? Input::get('quarter') : (Session::has('report_quarter') ? Session::get('report_quarter') : date('m') == '00' || date('m') == '01' || date('m') == '02' ? '0' : date('m') == '03' || date('m') == '04' || date('m') == '05' ? '1' : date('m') == '06' || date('m') == '07' || date('m') == '08' ? '2' : '3'));
             Session::put('report_year', Input::has('year') ? Input::get('year') : (Session::has('report_year') ? Session::get('report_year') : date('Y')));
             return view('report.quarterly');
         }

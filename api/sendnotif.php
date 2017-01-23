@@ -5,7 +5,7 @@ $receiver = $_POST['idreceiver'];
 $title = $_POST['title'];
 $pathFCM = "https://fcm.googleapis.com/fcm/send";
 $serverKey = "AIzaSyDPnGGCUpJmfjFFt4h9HYBZjNbC6ZVH-xQ";
-$sql = "SELECT device_id FROM device WHERE user_id='$receiver'";
+$sql = "SELECT device_id FROM devices WHERE user_id=$receiver";
 $res = mysqli_query($con,$sql);
 $found=mysqli_num_rows($res);
 	$num=0;

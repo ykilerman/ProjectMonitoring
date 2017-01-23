@@ -20,9 +20,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $complate=$_POST['complate'];
 
     if (isset($_POST['imageActivity'])&&isset($_POST['imageIncome'])&&isset($_POST['imageExpense'])) {
-        $imageActivity = $_POST['imageActivity'];
-        $imageIncome = $_POST['imageIncome'];
-        $imageExpense = $_POST['imageExpense'];
 
 
 
@@ -30,7 +27,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         VALUES ('$id','$Highlight','$Activity','$imageActivity.jpg','$Income','$imageIncome.jpg','$Expense','$imageExpense.jpg')";
 
         if (mysqli_query($con, $sql)) {
-            mysqli_query($con,"UPDATE projects SET complate='$complate' WHERE id=$id");
+            mysqli_query($con,"UPDATE projects SET percent='$complate' WHERE id=$id");
+
+        $imageActivity = $_POST['imageActivity'];
+        $imageIncome = $_POST['imageIncome'];
+        $imageExpense = $_POST['imageExpense'];
         file_put_contents($pathActivity, base64_decode($imageActivity));
         file_put_contents($pathIncome, base64_decode($imageIncome));
         file_put_contents($pathExpense, base64_decode($imageExpense));
